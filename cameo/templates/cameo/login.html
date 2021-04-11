@@ -1,0 +1,83 @@
+<style>
+    .modal-title{
+        width: 100%;
+        font-size: 1.3rem;
+        color: white;
+        font-weight: bold;
+    }
+    .modal-header{
+        border-bottom: 0px solid black;
+        background-color: #1c1c1c;
+    }
+    .modal-body{
+        background-color: #1c1c1c;
+        color: white;
+    }
+    .btn-close-login{
+        color: white !important;
+        background-color: rgb(80, 80, 80)  !important;
+    }
+    .btn-fb{
+        width: 100%;
+        padding: 10px 20px;
+        background-color: white !important;
+    }
+    .btn-gl{
+        border: 0px;
+        width: 100%;
+        padding: 10px 20px;
+        background-color: white !important; 
+        display: flex;
+        align-items: center;
+        justify-content: center;  
+    }
+    .fa-google,.fa-facebook{
+        margin-right: 10px;
+        font-size: 1.2rem;
+        color: red;
+    }
+    .login-input{
+        color: white;
+        width: 100%;
+        background-color: transparent;
+        border: 0.1rem solid rgb(62, 62, 62);
+        padding: 10px 20px;
+        border-radius: 0.6rem;
+    }
+    .login-input:focus{
+        outline: none;
+    }
+    .login-email{
+        color: white;
+        width: 100%;
+        background-color: rgb(69, 255, 255);
+        border: 0px;
+        padding: 10px 20px;
+        font-size: .9rem;
+        color: black;
+        border-radius: .2rem;
+    }
+
+</style>
+  <!-- Modal -->
+  <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-center" id="exampleModalLabel ">Log in to Cameo</h5>
+          <button type="button" class="btn-close btn-close-login" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <button type="button" class="login-email btn-fb metro"><img class="fa-facebook" src="https://img.icons8.com/fluent/28/000000/facebook-new.png"/><span class="text-dark">Continue with Facebook</span></button>
+            <button type="button" class=" mt-2  login-email btn-gl metro"><img class="fa-google" src="https://img.icons8.com/color/28/000000/google-logo.png"/></i><span class="text-dark">Continue with Google</span></button>
+            <p style="width: 100%;text-align: center;margin-top: 10px;">OR</p>
+            <form action="/login" method="POST">
+                {% csrf_token %}
+            <input required type="type" name="username"  placeholder="Username" class="login-input" >
+            <input required type="password" name="password" placeholder="password" class="login-input mt-2" >
+            <button class="login-email mt-2">Login with email</button>
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>

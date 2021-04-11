@@ -1,0 +1,167 @@
+{% include 'cameo/login.html' %}
+</script>
+<style>
+    .navbar{
+        width: 100%;
+        max-height: 56px;
+        height: 56px;
+        background-color: rgb(16, 16, 16);
+        padding: 0px 20px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .logo{
+        width: 100px;
+    }
+    .logo-container{
+        flex-grow: 1;
+    }
+    .input-container{
+        
+        background-color: rgb(37, 37, 37);
+        border-radius: 100px;
+    }
+    .search-input{
+        min-height: 37px;
+        background-color: transparent;
+        border: none;
+        padding: 0px 20px;
+        width: 70%;
+        color: white;
+    }
+    .search-input:focus{
+        outline: none;
+    }
+    .right-element{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        width: 70%;
+    }
+    .btn-login{
+        font-size: .8rem;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-left: 1rem;
+        background-color: transparent;
+        border: 0px solid black;
+    }
+    .btn-login:hover{
+        background-color: white;
+        background-color: rgba(255, 255, 255, 0.288);
+        transition: all .5s;
+    }
+    .btn-login:focus{
+        outline: none;
+        background-color: transparent;
+        border: 0px solid white;
+        
+    }
+    .btn-login:active{
+        outline: none;
+        transition: all .5s;
+    }
+    .avatar{
+        -webkit-user-select: none; /* Safari */        
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; 
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        min-height: 40px;
+        margin-left: 1rem;
+        background-color: salmon;
+        border-radius: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .avatar:hover{
+        cursor: pointer;
+    }
+    #main-menu{
+        background-color: rgb(37, 37, 37);
+        width: 250px;
+        position: absolute;
+        top: 56px;
+    }
+    .dropdown-item{
+        color: white;
+        cursor: pointer;
+    }
+    .dropdown-item:active,.dropdown-item:focus{
+        background-color: rgb(37, 37, 37);
+    }
+    .dropdown-item:hover{
+        background-color: rgb(112, 112, 112);
+        color: white;
+    }
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .3s
+    }
+    .fade-enter, .fade-leave-to {
+        opacity: 0
+    }
+    @media all and (max-width:400px){
+        .logo{
+            width: 60px;
+        }
+        .avatar{
+            margin-left: .5rem  ;
+        }
+    }
+</style>
+
+<div class="navbar" id="navbar">
+    <div class="logo-container">
+
+        <img src="https://cdn.cameo.com/staticDir/logo_white.svg" class="logo">
+    </div>
+    <div class="right-element">
+        <div class="input-container">
+            <input type="text" placeholder="Search..." class="search-input">
+        </div>
+        {% if request.user.is_authenticated %}
+        <div v-on:click="toggleMenu" class="avatar">
+         <h3> {{ request.user.username|slice:"0:1"}}</h3>
+        </div>
+        <transition name="fade">
+          <ul  v-if="showMenu" class="dropdown-menu"  v-bind:style="{ display: showMenu ? 'block': 'none' }" id="main-menu">
+            <li class="dropdown-item">Dashboard</li>
+            <li class="dropdown-item">Profile</li>
+            <li class="dropdown-item">Sales</li>
+            <li class="dropdown-item">Purchase</li>
+            <li class="dropdown-item">Cameos</li> 
+            <form method="POST" action="/logout">
+                {% csrf_token %}
+                <button class="dropdown-item text-danger">Logout</button>
+            </form>
+          </ul>  
+        </transition>
+        
+        {% else %}
+        <button class="btn-login" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button>
+        {% endif %}
+    </div>
+</div>
+<script defer>
+    var app = new Vue({
+  el: '#navbar',
+  delimiters: ['[[', ']]'],
+  data: {
+    showMenu: false,
+    styleObject: {
+    color: 'red',
+    display: this.showMenu ? 'block' : 'none'
+  }
+  },
+  methods: {
+      toggleMenu: function (){
+          this.showMenu = !this.showMenu;
+      }
+  }
+})
+</script>
