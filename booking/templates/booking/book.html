@@ -3,10 +3,9 @@
 <style>
     .container {
         margin-bottom: 2.5rem;
-        margin-top: 2.5rem;
         background-color: rgb(28, 28, 28);
         border-radius: 10px;
-        padding: 20px 1rem;
+        padding: 10px 1rem;
     }
 
     .celeb-user {
@@ -140,8 +139,56 @@
         border: 2px solid rgb(255, 3, 124);
         background-color: rgb(17, 17, 17);
     }
+    #celeb-container{
+        padding: 2rem 15%;
+    }
+    .user-instructions-container{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .user-instructions{
+        background-color: transparent;
+        color: white;
+    }
+    .user-instructions:active{
+        background-color: transparent;
+        color: white;
+    }
+    .user-instructions:focus{
+        background-color: transparent;
+        color: white;
+    }
+    .btn-continue-detail{
+        background-color: rgb(255, 3, 124);
+        color: white;
+        width: 65%;
+        margin: 10px auto;
+    }
+    .btn-continue-detail:hover{
+        color: white !important;
+    }
+    @media screen and (max-width:800px){
+        .occasion-container{
+            grid-template-columns: 1fr 1fr 1fr;
+            margin: 0px 0px;
+            width: 100%;
+        }
+        #celeb-container{
+            padding: 2rem 5%;
+        }
+        .request-detail{
+            width: 100%;
+        }
+    }
+    @media screen and (max-width:500px) {
+        .occasion-container{
+            grid-template-columns: 1fr 1fr;
+        }
+    }
 </style>
-<form style="padding: 2rem 16rem;" action="/" method="POST" id="celeb-container">
+<form method="POST" id="celeb-container">
     <div class="container">
         <div class="celeb-user">
             <img class="celeb-image" src="{{cameo.image.url}}" alt="">
@@ -167,20 +214,20 @@
             <div class="request-detail">
                 <div class="request-input-container ">
                     <label for="to">To</label>
-                    <input placeholder="John" type="text" name="to" class="request-to text-white">
+                    <input placeholder="John" v-model="to" type="text" name="to" class="request-to text-white">
                 </div>
                 <div v-if="receipent == 'gift'" class="request-input-container">
                     <label for="from">From</label>
                     <input placeholder="James" type="text" name="from" class="request-to">
                 </div>
                 <label for="pronounce">Pronounce</label>
-                <select class="request-pron-select text-white mb-5 form-select" name="pronounce"
+                <select v-model="pronounce" class="request-pron-select text-white mb-5 form-select" name="pronounce"
                     aria-label="Default select example">
                     <option class="request-select-items" selected>Select...</option>
-                    <option class="request-select-items" value="1">They/Them: "Wish them a happy birthday!"</option>
-                    <option class="request-select-items" value="2">She/Her: "Wish her a happy birthday!"</option>
-                    <option class="request-select-items" value="3">He/Him: "Wish him a happy birthday!"</option>
-                    <option class="request-select-items" value="3">Pronoun not listed - will clarify in request</option>
+                    <option class="request-select-items" value="they/them">They/Them: "Wish them a happy birthday!"</option>
+                    <option class="request-select-items" value="she/her">She/Her: "Wish her a happy birthday!"</option>
+                    <option class="request-select-items" value="he/him">He/Him: "Wish him a happy birthday!"</option>
+                    <option class="request-select-items" value="inrequest">Pronoun not listed - will clarify in request</option>
 
                 </select>
             </div>
@@ -307,13 +354,33 @@
 
         </div>
     </div>
+    <div class="container">
+        <div class="user-instruction-container">
+            <p style="font-size: 1.3rem;font-weight: bold;">Instructions</p>
+            <p style="margin-bottom: 3px;">My instruction for {{cameo.first_name|add:" "|add:cameo.last_name}} are</p>
+            <textarea v-model="instructions" style="margin-bottom: 1rem;" name="instruction" id="" cols="30" rows="7" placeholder="My partner (Tom) is turning 34 on Friday. Please wish him a happy birthday from me (Cary). We’ve been together for 3 yrs & met on Tinder. He’s your biggest fan - a bday shoutout from you will make his day!" class="form-control user-instructions"></textarea>
+            <p style="font-size: 1.1rem;color: rgba(255, 255, 255, 0.425);">Don't forget to add pronunciation, it really helps.</p>
+            <div class="form-check">
+                <input v-model="hideCameo" class="form-check-input check-input-lg" type="checkbox" value="" id="flexCheckDefault">
+                <label style="font-size: 1.1rem;" class="form-check-label" for="flexCheckDefault">
+                    Hide this video from {{cameo.first_name|add:" "|add:cameo.last_name}}'s profile
+                </label>
+            </div>
+            <div style="width: 100%;display: grid;place-items: center;">
+                <button @click="submitRequest" class="btn btn-continue-detail">Continue</button>
+            </div>
+        </div>
 </form>
 <script defer>
     const vue = new Vue({
         el: '#celeb-container',
         data: {
             receipent: '',
-            occasion: ''
+            occasion: '',
+            to: '',
+            pronounce: '',
+            instructions: '',
+            hideCameo: false,
         },
         methods: {
             toggleGift: function () {
@@ -324,6 +391,10 @@
             },
             selectOccasion: function (occasion) {
                 this.occasion = occasion
+            },
+            submitRequest: function (e) {
+                e.preventDefault()
+                console.log(this.to, this.pronounce, this.instructions, this.hideCameo, this.receipent, this.occasion)
             }
         }
     })
