@@ -1,7 +1,7 @@
 {% extends 'cameo/base.html' %}
 {% block body %}
-    <style>
-    .cameo-detail-container{
+<style>
+    .cameo-detail-container {
         display: grid;
         max-width: 84rem;
         width: 100%;
@@ -10,26 +10,30 @@
         row-gap: 1.6rem;
         margin: 0px auto 4rem;
     }
-    .cameo-basic-detail{
+
+    .cameo-basic-detail {
         display: grid;
         grid-template-columns: fit-content(20rem) minmax(0px, 1fr);
         column-gap: 1rem;
-        
+
     }
-    .cameo-image-img{
+
+    .cameo-image-img {
         border: 3px solid white;
         height: 10rem;
         overflow: hidden;
         object-fit: cover;
         border-radius: 300px;
     }
-    .cameo-info-container{
+
+    .cameo-info-container {
         padding: 0px 0px 0px 30px;
         display: flex;
         flex-direction: column;
         align-items: flex-start;
     }
-    .superfast-container{
+
+    .superfast-container {
         border-radius: 5px;
         padding: 3px 7px;
         font-size: .9rem;
@@ -37,14 +41,16 @@
         background-color: rgb(28, 28, 28);
         color: rgb(255, 187, 0);
     }
-    .cameo-feature-container{
+
+    .cameo-feature-container {
         border-radius: 10px;
         width: 100%;
         height: 60px;
         display: flex;
         background-color: rgb(28, 28, 28);
     }
-    .cameo-feature{
+
+    .cameo-feature {
         flex-grow: 1;
         height: 100%;
         display: flex;
@@ -55,7 +61,8 @@
         font-size: .9rem;
         color: rgb(182, 182, 182);
     }
-    .btn-request{
+
+    .btn-request {
         background-color: rgb(255, 3, 124);
         color: white;
         font-size: 1.2rem;
@@ -63,76 +70,113 @@
         border-radius: 200px;
         width: 100%;
     }
-    .btn-request:hover{
+
+    .btn-request:hover {
         color: white;
     }
-    .imp-btn{
+
+    .imp-btn {
         display: flex;
         align-items: center;
         justify-content: space-between;
     }
-    .btn-join{
+
+    .btn-join {
         background-color: rgb(49, 49, 49);
         color: rgb(69, 255, 255);
         border-radius: 100px;
         padding: 7px 20px;
     }
-    .btn-join:hover{
+
+    .btn-join:hover {
         background-color: rgb(83, 83, 83);
         transition: all .3s;
         color: rgb(69, 255, 255);
     }
-    .breadcumber{
+
+    .breadcumber {
         color: rgb(69, 255, 255);
     }
-    .how{
+
+    .how {
         width: 100%;
         text-align: center;
         font-size: 1.1rem;
         font-weight: bold;
     }
-    .how:hover{
+
+    .how:hover {
         cursor: pointer;
     }
-    a{
+
+    a {
         text-decoration: none;
         color: white;
     }
-    a:hover{
+
+    a:hover {
         color: white;
     }
-    @media all and (max-width:800px){
-        .cameo-detail-container{
+
+    .review-container {
+        margin-top: 1.3rem;
+
+    }
+
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .review {
+        border-radius: 20px;
+        padding: 20px 40px;
+        font-size: .9rem;
+        background-color: rgb(28, 28, 28);
+    }
+
+    .review-all:hover {
+        cursor: pointer;
+    }
+
+    @media all and (max-width:800px) {
+        .cameo-detail-container {
             padding: 0px 2rem;
         }
     }
-    @media all and (max-width:500px){
-        .imp-btn{
+
+    @media all and (max-width:500px) {
+        .imp-btn {
             flex-direction: column;
             justify-content: center;
         }
-        .breadcumber{
+
+        .breadcumber {
             margin-bottom: 10px;
         }
     }
-    @media all and (max-width:450px){
-        .cameo-detail-container{
+
+    @media all and (max-width:450px) {
+        .cameo-detail-container {
             padding: 0px 10px;
         }
-        .cameo-basic-detail{
+
+        .cameo-basic-detail {
             grid-template-columns: 1fr;
         }
-        .cameo-image-avatar{
+
+        .cameo-image-avatar {
             margin: 0px auto;
         }
     }
-    </style>
-<div class="container mt-3 cameo-detail-container">
+</style>
+<div id="cameo-detail-container" class="container mt-3 cameo-detail-container">
     <div class="imp-btn">
-        <span class="breadcumber">Home <span style="color: white;">></span> {{cameo.category}} <span style="color: white;">></span> {{cameo.first_name|add:" "|add:cameo.last_name}}</span>
+        <span class="breadcumber">Home <span style="color: white;">></span> {{cameo.category}} <span
+                style="color: white;">></span> {{cameo.first_name|add:" "|add:cameo.last_name}}</span>
         <div>
             <a href="#" class="btn btn-join"><span>Join Fan Club</span></a>
-            <a href="#" class="btn btn-join"><i class="fas fa-link"></i></a>
+            <a href="#" class="btn btn-join" id="liveToastBtn" v-on:click=copyLink><i class="fas fa-link"></i></a>
         </div>
 
     </div>
@@ -141,10 +185,14 @@
             <img class="cameo-image-img" src="{{cameo.image.url}}" alt="cameo image">
         </div>
         <div class="cameo-info-container">
-            <h3 style="font-size: 1.9rem;margin: 0px;font-weight: bold">{{cameo.first_name|add:" "|add:cameo.last_name}}</h3>
+            <h3 style="font-size: 1.9rem;margin: 0px;font-weight: bold">{{cameo.first_name|add:" "|add:cameo.last_name}}
+            </h3>
             <p style="color: rgb(163, 163, 163);font-size: 1rem;margin: 0px;">{{cameo.intro}}</p>
             {% if cameo.delivery_duration_unit == 'Hr' %}
-                <div class="superfast-container"><p style="margin: 0px;"><img style="margin-right: 5px;" src="https://cdn.cameo.com/static/24hr-icon.svg" alt="Expedited-Cameo">24hr delivery available</p></div>
+            <div class="superfast-container">
+                <p style="margin: 0px;"><img style="margin-right: 5px;" src="https://cdn.cameo.com/static/24hr-icon.svg"
+                        alt="Expedited-Cameo">24hr delivery available</p>
+            </div>
             {% endif %}
             <p style="color: rgb(163, 163, 163);margin-top: 5px;">{{cameo.bio}}</p>
         </div>
@@ -152,33 +200,192 @@
     <div class="cameo-feature-container">
         <div class="cameo-feature">
             <p style="margin: 0px;">Responds in</p>
-            <p style="margin: 0px;font-weight: bold; color: white;"><i style="margin-right: 10px;" class="far fa-clock"></i>{{ cameo.delivery_duration }} {{ cameo.delivery_duration_unit }}</p>
+            <p style="margin: 0px;font-weight: bold; color: white;"><i style="margin-right: 10px;"
+                    class="far fa-clock"></i>{{ cameo.delivery_duration }} {{ cameo.delivery_duration_unit }}</p>
         </div>
         <div class="cameo-feature">
             <p style="margin: 0px;">Reviews({{review_count}})</p>
-            <p style="margin: 0px;font-weight: bold; color: white;"><i class="fas fa-star" style="margin-right: 10px;color: yellow;"></i>rating</p>
+            <p style="margin: 0px;font-weight: bold; color: white;"><i class="fas fa-star"
+                    style="margin-right: 10px;color: yellow;"></i>rating</p>
         </div>
         <div class="cameo-feature">
             <p style="margin: 0px;">Fan Club</p>
-            <p style="margin: 0px;font-weight: bold; color: white;"><i style="margin-right: 10px;color: rgb(255, 0, 128);" class="fas fa-heart"></i>{{ cameo.delivery_duration }} {{ cameo.delivery_duration_unit }}</p>
+            <p style="margin: 0px;font-weight: bold; color: white;"><i
+                    style="margin-right: 10px;color: rgb(255, 0, 128);" class="fas fa-heart"></i>{{cameo.fans|length }}
+            </p>
         </div>
-    </div>  
-    <div>
-        <a type="button" class="btn btn-request" href="/vanillaice/book/signup">Request ${{cameo.price|floatformat}}</a>
     </div>
-    <div class="how"> <p data-bs-toggle="modal" data-bs-target="#workings"><i style="margin-right: 10px;" class="fas fa-info-circle"></i>How it works?</p></div>
+    <div>
+        {% if cameo.is_superuser %}
+        <a type="button" class="btn btn-request" href="/vanillaice/book/signup">Contact us</a>
+        {% else %}
+        <a type="button" class="btn btn-request" href="{% url 'book:book' cameo.username  %}">Request
+            ${{cameo.price|floatformat}}</a>
+        {% endif %}
+    </div>
+    <div class="how">
+        <p data-bs-toggle="modal" data-bs-target="#workings"><i style="margin-right: 10px;"
+                class="fas fa-info-circle"></i>How it works?</p>
+    </div>
     <div class="modal fade" id="workings" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header" style="padding: 10px 10px;">
-              <h5 class="modal-title text-center" id="exampleModalLabel">What happens when I request a Cameo?</h5>
-              <button type="button" style="background-color: rgb(177, 177, 177);" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 10px 10px;">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">What happens when I request a Cameo?</h5>
+                    <button type="button" style="background-color: rgb(177, 177, 177);" class="btn-close"
+                        data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="padding: 25px 50px;">
+                    <div class="Styled__Wrapper-xpcshi-4 clblZC">
+                        <div class="Styled__Row-xpcshi-3 cqOMkU">
+                            <div class="Styled__Icon-xpcshi-2 hKcuCM"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="#FF037C" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                                </svg></div>
+                            <p class="Styled__Text-xpcshi-1 dXZrkR">Your request will be completed within 7 days</p>
+                        </div>
+                        <div class="Styled__Row-xpcshi-3 cqOMkU">
+                            <div class="Styled__Icon-xpcshi-2 hKcuCM"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="#FF037C" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg></div>
+                            <p class="Styled__Text-xpcshi-1 dXZrkR">Your receipt and order updates will be sent to the
+                                email provided under Delivery Information</p>
+                        </div>
+                        <div class="Styled__Row-xpcshi-3 cqOMkU">
+                            <div class="Styled__Icon-xpcshi-2 hKcuCM"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="#FF037C" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z">
+                                    </path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg></div>
+                            <p class="Styled__Text-xpcshi-1 dXZrkR">When your request is completed, we’ll email and text
+                                you a link to view, share, or download your Cameo</p>
+                        </div>
+                        <div class="Styled__Row-xpcshi-3 cqOMkU">
+                            <div class="Styled__Icon-xpcshi-2 hKcuCM"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                    height="24" viewBox="0 0 24 24" fill="none" stroke="#FF037C" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                                </svg></div>
+                            <p class="Styled__Text-xpcshi-1 dXZrkR">If for some reason your video isn’t completed, the
+                                hold on your card will be removed within 5-7 business days</p>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body" style="padding: 25px 50px;">
-              <div class="Styled__Wrapper-xpcshi-4 clblZC"><div class="Styled__Row-xpcshi-3 cqOMkU"><div class="Styled__Icon-xpcshi-2 hKcuCM"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF037C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></div><p class="Styled__Text-xpcshi-1 dXZrkR">Your request will be completed within 7 days</p></div><div class="Styled__Row-xpcshi-3 cqOMkU"><div class="Styled__Icon-xpcshi-2 hKcuCM"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF037C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></div><p class="Styled__Text-xpcshi-1 dXZrkR">Your receipt and order updates will be sent to the email provided under Delivery Information</p></div><div class="Styled__Row-xpcshi-3 cqOMkU"><div class="Styled__Icon-xpcshi-2 hKcuCM"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF037C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></div><p class="Styled__Text-xpcshi-1 dXZrkR">When your request is completed, we’ll email and text you a link to view, share, or download your Cameo</p></div><div class="Styled__Row-xpcshi-3 cqOMkU"><div class="Styled__Icon-xpcshi-2 hKcuCM"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#FF037C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg></div><p class="Styled__Text-xpcshi-1 dXZrkR">If for some reason your video isn’t completed, the hold on your card will be removed within 5-7 business days</p></div></div>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
+    <div class="review-section">
+        <div class="review-header">
+            <p style="margin: 0px;font-size: 1.2rem;font-weight: bold;">Reviews</p>
+
+            <p class="review-all" data-bs-toggle="modal" data-bs-target="#reviews"
+                style="margin: 0px;color: rgb(69, 255, 255);">See all
+            </p>
+        </div>
+        {% for review in cameo.reviews|slice:"1:3" %}
+        <div class="review-container">
+            <div class="review">
+                <p style="margin:0px;font-size: 1rem;margin-bottom: 10px;">
+
+                    <i class="fas fa-star" style="color: yellow;"></i>
+                    {{review.star}}
+                </p>
+                <p style="margin: 0px;margin-bottom: 5px;">Reviewed by {{review.user}} on January 23rd, 2021</p>
+                <p style="margin:0px;color: rgb(156, 156, 156);">{{review.review}}
+                </p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+<!-- review modal -->
+<div class="modal fade" id="reviews" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: rgb(22, 22, 22) !important;">
+                <h5 class="modal-title" id="exampleModalLabel">Latest Reviews</h5>
+                <button type="button" class="btn-close bg-light" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="background-color: rgb(22, 22, 22) !important;">
+                {% for review in cameo.reviews %}
+                <div class="review-container">
+                    <div class="review">
+                        <p style="margin:0px;font-size: 1rem;margin-bottom: 10px;">
+
+                            <i class="fas fa-star" style="color: yellow;"></i>
+                            {{review.star}}
+                        </p>
+                        <p style="margin: 0px;margin-bottom: 5px;">Reviewed by {{review.user}} on January 23rd, 2021</p>
+                        <p style="margin:0px;color: rgb(173, 173, 173);">{{review.review}}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Request modal -->
+<div class="modal fade" id="payment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Write your request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <textarea name="request" placeholder="Your request..." cols="30" rows="10"
+                class="form-control bg-dark text-white"></textarea>
+            <div class="modal-body">
+                <button class="btn btn-primary" data-bs-target="#modal2" data-bs-toggle="modal" data-bs-dismiss="modal"
+                    style="background-color: rgb(255, 0, 128);">Continue</button>
+                <!-- <button class="btn btn-primary">Stripe</button> -->
+                <button class="btn btn-primary" data-bs-target="#modal2" data-bs-toggle="modal"
+                    data-bs-dismiss="modal">Open #modal2</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Payment model -->
+<div class="modal fade" id="modal2" aria-hidden="true" aria-labelledby="..." tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            ...
+            <div class="modal-footer">
+                <!-- Toogle to first dialog, `data-bs-dismiss` attribute can be omitted - clicking on link will close dialog anyway -->
+                <a class="btn btn-primary" href="#modal" data-bs-toggle="modal" role="button">Open #modal</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script defer>
+    const vue = new Vue({
+        el: '#cameo-detail-container',
+        delimiters: ["[[", "]]"],
+        methods: {
+            copyLink: async function () {
+                try {
+                    await navigator.clipboard.writeText("{{ request.build_absolute_uri }}");
+                    alert("Link copied")
+                }
+                catch (err) {
+                    console.error('Failed to copy: ', err);
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}

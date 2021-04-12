@@ -71,5 +71,6 @@ class Cameo(AbstractUser):
     intro = models.CharField(max_length=500, null=True)
     bio = models.CharField(max_length=2000, null=True)
     paypal_email = models.EmailField(null=True)
-    reviews = JSONField(default="[]")
-    fans = JSONField(default="[]")
+    is_featured = models.BooleanField(null=True, blank=True, default=False)
+    reviews = JSONField(default=[])
+    fans = JSONField(default=[])

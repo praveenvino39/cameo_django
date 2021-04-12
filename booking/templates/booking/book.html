@@ -1,0 +1,331 @@
+{% extends 'cameo/base.html' %}
+{% block body %}
+<style>
+    .container {
+        margin-bottom: 2.5rem;
+        margin-top: 2.5rem;
+        background-color: rgb(28, 28, 28);
+        border-radius: 10px;
+        padding: 20px 1rem;
+    }
+
+    .celeb-user {
+        display: flex;
+        justify-content: center !important;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .celeb-image {
+        border-radius: 150px;
+        width: 100px;
+        height: 100px;
+        margin: 1.6rem;
+        border: 3px solid white
+    }
+
+    .celeb-name {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    .for-icon {
+        font-size: 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .request-icon {
+        border: 2px solid white;
+        height: 50px;
+        width: 50px;
+        display: grid;
+        place-items: center;
+        border-radius: 100px;
+        margin: 0px 1rem;
+    }
+
+    .request-type {
+        margin: 0px 1rem;
+        display: grid;
+        place-items: center;
+    }
+
+    .request-type:hover>.request-icon {
+        cursor: pointer;
+        background-color: rgb(17, 17, 17);
+    }
+
+    .request-active {
+        border: 2px solid rgb(255, 3, 124);
+        background-color: rgb(17, 17, 17);
+    }
+
+    .request-type:hover {
+        cursor: pointer;
+    }
+
+    .request-detail {
+        width: 70%;
+    }
+
+    .request-to {
+        background-color: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.219);
+        padding: 7px 10px;
+        border-radius: 5px;
+        height: 55px;
+    }
+
+    .request-input-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .form-select {
+        background-color: transparent;
+    }
+
+    .request-pron-select {
+        border: 1px solid rgba(255, 255, 255, 0.219);
+        background-color: transparent;
+        height: 55px;
+    }
+
+    .request-select-items {
+        background-color: rgb(28, 28, 28);
+    }
+
+    .request-occasion-title {
+        text-align: center;
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+    }
+
+    .occasion-container {
+        gap: 1rem;
+        margin: 0 auto;
+        width: 60%;
+        font-size: 1.5rem;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+    }
+
+    .occasion-icon {
+        margin: 0 auto;
+        display: grid;
+        place-items: center;
+        border: 2px solid rgba(255, 255, 255, 0.425);
+        width: 50px;
+        height: 50px;
+        border-radius: 100px;
+    }
+
+    .occasion-name {
+        font-size: .8rem;
+    }
+
+    .occasion-container div:hover {
+        cursor: pointer;
+    }
+
+    .occasion-container div:hover>.occasion-icon {
+        background-color: rgb(17, 17, 17);
+    }
+
+    .occasion-active {
+        border: 2px solid rgb(255, 3, 124);
+        background-color: rgb(17, 17, 17);
+    }
+</style>
+<form style="padding: 2rem 16rem;" action="/" method="POST" id="celeb-container">
+    <div class="container">
+        <div class="celeb-user">
+            <img class="celeb-image" src="{{cameo.image.url}}" alt="">
+            <p class="celeb-name">New request for Lily Allen</p>
+            <p style="font-size: 1.1rem;">Who is this for?</p>
+            <div class="for-icon">
+                <input type="text" name="request-type" :value="receipent" hidden>
+
+                <div @click="toggleGift" class="request-type">
+                    <div class="request-icon" :class="{ 'request-active': receipent == 'gift' }">
+                        <i class="fas fa-gifts"></i>
+                    </div>
+                    <p style="font-size: .8rem;">Someone else</p>
+                </div>
+                <div @click="toggleMyself" class="request-type">
+                    <div class="request-icon" :class="{ 'request-active': receipent == 'myself' }">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <p style="font-size: .8rem;">Myself
+                    <p>
+                </div>
+            </div>
+            <div class="request-detail">
+                <div class="request-input-container ">
+                    <label for="to">To</label>
+                    <input placeholder="John" type="text" name="to" class="request-to text-white">
+                </div>
+                <div v-if="receipent == 'gift'" class="request-input-container">
+                    <label for="from">From</label>
+                    <input placeholder="James" type="text" name="from" class="request-to">
+                </div>
+                <label for="pronounce">Pronounce</label>
+                <select class="request-pron-select text-white mb-5 form-select" name="pronounce"
+                    aria-label="Default select example">
+                    <option class="request-select-items" selected>Select...</option>
+                    <option class="request-select-items" value="1">They/Them: "Wish them a happy birthday!"</option>
+                    <option class="request-select-items" value="2">She/Her: "Wish her a happy birthday!"</option>
+                    <option class="request-select-items" value="3">He/Him: "Wish him a happy birthday!"</option>
+                    <option class="request-select-items" value="3">Pronoun not listed - will clarify in request</option>
+
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="container" id="celeb-container">
+        <p class="request-occasion-title">Select an occasion</p>
+        <input type="text" hidden :value="occasion">
+        <div class="occasion-container">
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'none' }" @click="()=>selectOccasion('none')"
+                    class="occasion-icon">
+                    <i class="far fa-times-circle"></i>
+                </div>
+                <p class="occasion-name">None</p>
+            </div>
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'gift' }" @click="()=>selectOccasion('gift')"
+                    class="occasion-icon">
+
+                    <i class="fas fa-gift"></i>
+
+                </div>
+                <p class="occasion-name">Gift</p>
+            </div>
+
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'aniversary' }" @click="()=>selectOccasion('aniversary')"
+                    class="occasion-icon">
+
+                    <i class="fas fa-user-friends"></i>
+
+                </div>
+                <p class="occasion-name">Aniversary</p>
+            </div>
+
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'announcement' }"
+                    @click="()=>selectOccasion('announcement')" class="occasion-icon">
+
+                    <i class="fas fa-smile"></i>
+
+                </div>
+                <p class="occasion-name">Announcement</p>
+            </div>
+
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'question' }" @click="()=>selectOccasion('question')"
+                    class="occasion-icon">
+
+                    <i class="fas fa-comment-alt"></i>
+
+                </div>
+                <p class="occasion-name">Question</p>
+            </div>
+
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'advice' }" @click="()=>selectOccasion('advice')"
+                    class="occasion-icon">
+
+                    <i class="fas fa-anchor"></i>
+
+                </div>
+                <p class="occasion-name">Get advice</p>
+            </div>
+
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'wedding' }" @click="()=>selectOccasion('wedding')"
+                    class="occasion-icon">
+
+                    <i class="fas fa-heart"></i>
+
+                </div>
+                <p class="occasion-name">Wedding</p>
+            </div>
+
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'thanksgiving' }"
+                    @click="()=>selectOccasion('thanksgiving')" class="occasion-icon">
+
+                    <i class="fas fa-heart"></i>
+
+                </div>
+                <p class="occasion-name">Give Thanks</p>
+            </div>
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'birthday' }" @click="()=>selectOccasion('birthday')"
+                    class="occasion-icon">
+
+                    <i class="fas fa-gift"></i>
+
+                </div>
+                <p class="occasion-name">Birthday</p>
+            </div>
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'roast' }" @click="()=>selectOccasion('roast')"
+                    class="occasion-icon">
+
+                    <i class="fab fa-hotjar"></i>
+
+                </div>
+                <p class="occasion-name">Roast</p>
+            </div>
+
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'peptalk' }" @click="()=>selectOccasion('peptalk')"
+                    class="occasion-icon">
+
+                    <i class="fas fa-pepper-hot"></i>
+
+                </div>
+                <p class="occasion-name">Pep Talk</p>
+            </div>
+
+            <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
+                <div :class="{ 'occasion-active': occasion == 'other' }" @click="()=>selectOccasion('other')"
+                    class="occasion-icon">
+
+                    <i class="fas fa-star"></i>
+
+                </div>
+                <p class="occasion-name">Other</p>
+            </div>
+
+        </div>
+    </div>
+</form>
+<script defer>
+    const vue = new Vue({
+        el: '#celeb-container',
+        data: {
+            receipent: '',
+            occasion: ''
+        },
+        methods: {
+            toggleGift: function () {
+                this.receipent = 'gift'
+            },
+            toggleMyself: function () {
+                this.receipent = 'myself'
+            },
+            selectOccasion: function (occasion) {
+                this.occasion = occasion
+            }
+        }
+    })
+</script>
+{% endblock %}

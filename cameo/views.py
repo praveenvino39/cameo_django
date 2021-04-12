@@ -10,7 +10,11 @@ from .models import Cameo
 
 
 def homepage(request):
-    cameos = Cameo.objects.all()
+    cameos = []
+    results = Cameo.objects.all()
+    for cameo in results:
+        if len(cameo.reviews) == 6:
+            cameos.append(cameo)
     context = {'categories': Cameo.category_choice, 'cameos': cameos}
     return render(request, 'cameo/homepage.html', context=context)
 
@@ -38,5 +42,5 @@ def logout_user(request):
 
 def show_cameo(request, username):
     cameo = get_object_or_404(Cameo, username=username)
-    context = {"cameo": cameo, "review_count": len(json.loads(cameo.reviews))}
+    context = {"cameo": cameo, "review_count": len(cameo.reviews)}
     return render(request, 'cameo/show_cameo.html', context=context)

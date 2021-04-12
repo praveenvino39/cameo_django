@@ -3,21 +3,23 @@
 
 {% block body %}
 <style>
-    .messages{
+    .messages {
         width: 100%;
         display: flex;
-        
+
         justify-content: center;
         text-align: center;
     }
-    .banner-video{
+
+    .banner-video {
         width: 100%;
         height: 200px;
-    overflow: hidden;
-    border-radius: 6px !important;
-    background: #101010;
+        overflow: hidden;
+        border-radius: 6px !important;
+        background: #101010;
     }
-    .teaser{
+
+    .teaser {
         width: 100%;
         padding: 10px 50px;
         position: relative;
@@ -25,12 +27,14 @@
         justify-content: center;
         align-items: center;
     }
-    .teaser-video{
+
+    .teaser-video {
         width: 100%;
         border-radius: 20px;
-       
+
     }
-    .teaser-text{
+
+    .teaser-text {
         width: 60%;
         color: white;
         position: absolute;
@@ -39,58 +43,78 @@
         font-size: 2.5rem;
         font-weight: bold;
     }
-    .categories{
+
+    .categories {
         display: flex;
         margin-top: 10px;
         padding: 0px 20px;
         overflow-x: auto;
     }
-    .category{
-    -webkit-user-select: none; /* Safari */        
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    padding: 10px 10px 10px 20px;
-    margin: 0px 5px 0px 10px;
-    font-size: 1rem;
-    font-weight: 400;
-    letter-spacing: -0.01rem;
-    max-height: 40px;
-    -webkit-box-align: center;
-    align-items: center;
-    background-color: rgb(37, 37, 37);
-    border-radius: 8rem;
-    border: 0px;
-    color: rgb(243, 244, 254);
-    display: flex;
-    -webkit-box-pack: center;
-    justify-content: center;
-    padding: 1rem 1.5rem;
-    text-align: center;
-    text-decoration: none;
-    transition: background-color 216ms ease-in-out 0s;
-    white-space: nowrap;
-    pointer-events: inherit;
-    background-color: rgb(37, 37, 37);
+
+    .category {
+        -webkit-user-select: none;
+        /* Safari */
+        -moz-user-select: none;
+        /* Firefox */
+        -ms-user-select: none;
+        /* IE10+/Edge */
+        padding: 10px 10px 10px 20px;
+        margin: 0px 5px 0px 10px;
+        font-size: 1rem;
+        font-weight: 400;
+        letter-spacing: -0.01rem;
+        max-height: 40px;
+        -webkit-box-align: center;
+        align-items: center;
+        background-color: rgb(37, 37, 37);
+        border-radius: 8rem;
+        border: 0px;
+        color: rgb(243, 244, 254);
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        padding: 1rem 1.5rem;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 216ms ease-in-out 0s;
+        white-space: nowrap;
+        pointer-events: inherit;
+        background-color: rgb(37, 37, 37);
+        -ms-overflow-style: none;
+        /* Internet Explorer 10+ */
+        scrollbar-width: none;
+        /* Firefox */
     }
-    .category:hover{
+
+    .categories::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+
+    .category:hover {
         cursor: pointer;
         background-color: rgb(65, 65, 65);
         transition: all .3s;
     }
-    .section{
+
+    .section {
         margin-top: 10px;
         padding: 0px 50px;
     }
-    .section-title{
+
+
+    .section-title {
         font-size: 1.8rem;
         font-weight: bold;
     }
-    .section-header{
+
+    .section-header {
         display: flex;
         align-items: center;
-        justify-content: space-between;    
+        justify-content: space-between;
     }
-    .btn-slider-control{
+
+    .btn-slider-control {
         border-radius: 100px;
         border: 0px;
         background-color: rgb(37, 37, 37);
@@ -105,28 +129,41 @@
         justify-content: center;
         align-items: center;
     }
-    .controls{
+
+    .controls {
         display: flex;
         align-items: center;
     }
-    .section-body{
+
+    .section-body {
         margin-top: 7px;
         display: flex;
         overflow-x: auto;
         scroll-behavior: smooth;
+        -ms-overflow-style: none;
+        /* Internet Explorer 10+ */
+        scrollbar-width: none;
     }
-    @media screen and (max-width: 800px){
-        .teaser{
-           padding: 10px 10px;
-        }
-        .section{
+
+    .section-body::-webkit-scrollbar {
+        display: none;
+    }
+
+    @media screen and (max-width: 800px) {
+        .teaser {
             padding: 10px 10px;
         }
-        .teaser-text{
+
+        .section {
+            padding: 10px 10px;
+        }
+
+        .teaser-text {
             width: 90%;
             font-size: 2rem;
         }
-        .teaser-video{
+
+        .teaser-video {
             height: 40vh;
             object-fit: cover;
         }
@@ -135,14 +172,15 @@
 
 {% if messages %}
 <div style="margin: 10px;">
-<div class="messages">
-    {% for message in messages %}
-    <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
-        <p>{{message}}</p>
-        <button type="button" class="btn-close btn-sm btn-alert" data-bs-dismiss="alert" aria-label="Close"></button>
-      </div>
-    {% endfor %}
-</div>
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <p>{{message}}</p>
+            <button type="button" class="btn-close btn-sm btn-alert" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% endif %}
@@ -152,7 +190,8 @@
     {% endfor %}
 </div>
 <div class="teaser">
-    <video poster="https://cdn.cameo.com/miscellaneous/videos/useCaseOverlayWebthumbnail.jpg" class="teaser-video" muted playinline src="https://d3el26csp1xekx.cloudfront.net/miscellaneous/videos/useCaseOverlayWebApple.m4v">
+    <video poster="https://cdn.cameo.com/miscellaneous/videos/useCaseOverlayWebthumbnail.jpg" class="teaser-video" muted
+        playinline src="https://d3el26csp1xekx.cloudfront.net/miscellaneous/videos/useCaseOverlayWebApple.m4v">
     </video>
     <div class="teaser-text">Personalized videos feat. your favorite stars</div>
 </div>
@@ -161,87 +200,101 @@
         <p style="margin: 0px;" class="section-title">Featured</p>
         <div class="controls">
             <p style="margin: 0px; margin-right: 10px;">See all</p>
-            <button class="btn-slider-control" v-on:click="previous" style="margin-right: 6px;"><i class="fas fa-chevron-left"></i></button>
+            <button class="btn-slider-control" v-on:click="previous" style="margin-right: 6px;"><i
+                    class="fas fa-chevron-left"></i></button>
             <button class="btn-slider-control" v-on:click="next"><i class="fas fa-chevron-right"></i></button>
         </div>
     </div>
     <div class="section-body">
         {% for cameo in cameos %}
         <a class="cameo-link" href="{% url 'show_cameo' cameo.username  %}">
-        <div class="cameo">
-            <img class="cameo-image" src="{{cameo.image.url}}" alt="">
-            <div class="cameo-overlay"></div>
-            <span class="cameo-price">{% if cameo.delivery_duration_unit == "Hr" %}<div data-testid="24hr-delivery" class=""><img style="margin-right: 3px;width: 15px !important;height: 15px !important; object-fit: contain;" src="https://cdn.cameo.com/static/assets/icons/zap.svg" class=""></div>{% endif %} <strong><span>${{cameo.price|floatformat}}</span></strong></span>
-            <p class="cameo-name" style="margin: 0px;">{{cameo.first_name|add:" "|add:cameo.last_name}}</p>
-            <p class="cameo-intro" style="margin: 0px;">{{cameo.intro}}</p>
-        </div>
-    </a>
+            <div class="cameo">
+                <img class="cameo-image" src="{{cameo.image.url}}" alt="">
+                <div class="cameo-overlay"></div>
+                <span class="cameo-price">{% if cameo.delivery_duration_unit == "Hr" %}<div data-testid="24hr-delivery"
+                        class=""><img
+                            style="margin-right: 3px;width: 15px !important;height: 15px !important; object-fit: contain;"
+                            src="https://cdn.cameo.com/static/assets/icons/zap.svg" class=""></div>{% endif %}
+                    <strong><span>${{cameo.price|floatformat}}</span></strong></span>
+                <p class="cameo-name" style="margin: 0px;">{{cameo.first_name|add:" "|add:cameo.last_name}}</p>
+                <p class="cameo-intro" style="margin: 0px;">{{cameo.intro}}</p>
+            </div>
+        </a>
         {% endfor %}
     </div>
 </div>
 <script defer>
-     var app = new Vue({
-  el: '#section',
-  delimiters: ['[[', ']]'],
-  methods: {
-      previous: function (){
-          var section = document.getElementById('section')
-          section.scrollLeft = 100
-          console.log(section.scrollLeft);
-      },
-      next: function (){
-          console.log("toggleMenu");
-      }
-  }
-})
+    var app = new Vue({
+        el: '#section',
+        delimiters: ['[[', ']]'],
+        methods: {
+            previous: function () {
+                var section = document.getElementById('section')
+                section.scrollLeft = 100
+                console.log(section.scrollLeft);
+            },
+            next: function () {
+                console.log("toggleMenu");
+            }
+        }
+    })
 </script>
 <style>
-    .cameo-price{
+    .cameo-price {
         display: flex;
         position: absolute;
         bottom: 60px;
         right: 10px;
     }
-    .cameo-link{
+
+    .cameo-link {
         text-decoration: none;
         color: white;
     }
-    .cameo-link:hover{
+
+    .cameo-link:hover {
         text-decoration: none;
         color: white;
     }
-    .cameo-overlay{
+
+    .cameo-overlay {
         width: 100%;
         height: 50%;
         position: absolute;
         bottom: 56px;
         border-radius: 0px 0px 10px 10px;
-        background-image: linear-gradient(transparent,rgb(0, 0, 0));
+        background-image: linear-gradient(transparent, rgb(0, 0, 0));
     }
-    .cameo{
+
+    .cameo {
         margin-top: 10px;
         margin-right: 10px;
         position: relative;
     }
-    .cameo:first-child{
+
+    .cameo:first-child {
         margin-left: 10px;
     }
-    .cameo:hover{
+
+    .cameo:hover {
         transform: scale(1.04);
         cursor: pointer;
         transition: all .3s;
     }
-    .cameo-image{
+
+    .cameo-image {
         width: 12rem;
         height: 13rem;
         object-fit: cover;
         border-radius: 10px;
     }
-    .cameo-name{
+
+    .cameo-name {
         font-size: 1.2rem;
         font-weight: bolder;
     }
-    .cameo-intro{
+
+    .cameo-intro {
         font-size: .9rem;
         font-weight: 500;
         letter-spacing: -0.01rem;
@@ -256,5 +309,3 @@
     }
 </style>
 {% endblock %}
-
-
