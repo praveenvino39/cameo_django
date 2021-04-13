@@ -31,7 +31,7 @@
         background-color: transparent;
         border: none;
         padding: 0px 20px;
-        width: 70%;
+        width: 100%;
         color: white;
     }
 
@@ -103,30 +103,36 @@
         width: 250px;
         position: absolute;
         top: 56px;
+        border-radius: 10px;
     }
 
     .dropdown-item {
         color: white;
         cursor: pointer;
+        padding: 10px 20px;
     }
 
     .dropdown-item:active,
     .dropdown-item:focus {
         background-color: rgb(37, 37, 37);
+
     }
 
     .dropdown-item:hover {
         background-color: rgb(112, 112, 112);
         color: white;
+        transition: all .3s;
     }
 
     .fade-enter-active,
     .fade-leave-active {
-        transition: opacity .3s
+        margin-top: 0px;
+        transition: all .3s
     }
 
     .fade-enter,
     .fade-leave-to {
+        margin-top: 20px;
         opacity: 0
     }
 
@@ -142,17 +148,19 @@
 </style>
 
 <div class="navbar" id="navbar">
-    <div class="logo-container">
+    <a href="/">
+        <div class="logo-container">
+            <img src="https://cdn.cameo.com/staticDir/logo_white.svg" class="logo">
+        </div>
+    </a>
 
-        <img src="https://cdn.cameo.com/staticDir/logo_white.svg" class="logo">
-    </div>
     <div class="right-element">
         <div class="input-container">
             <input type="text" placeholder="Search..." class="search-input">
         </div>
         {% if request.user.is_authenticated %}
         <div v-on:click="toggleMenu" class="avatar">
-            <h3> {{ request.user.username|slice:"0:1"}}</h3>
+            <h3 style="margin-bottom: 5px"> {{ request.user.username|slice:"0:1"}}</h3>
         </div>
         <transition name="fade">
             <ul v-if="showMenu" class="dropdown-menu" v-bind:style="{ display: showMenu ? 'block': 'none' }"
@@ -160,7 +168,8 @@
                 {% if request.user.is_celebrity %}
                 <li class="dropdown-item">Dashboard</li>
                 {% endif %}
-                <li class="dropdown-item">Profile</li>
+                <li class="dropdown-item">Account</li>
+                <li class="dropdown-item">Following</li>
                 {% if request.user.is_celebrity %}
                 <li class="dropdown-item">Sales</li>
                 {% endif %}

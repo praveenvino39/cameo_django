@@ -19,6 +19,10 @@ def homepage(request):
     return render(request, 'cameo/homepage.html', context=context)
 
 
+def login_view(request):
+    return render(request, 'cameo/login_page.html')
+
+
 def login_user(request):
     if request.method == "POST":
         user = Cameo.objects.filter(

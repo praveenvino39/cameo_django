@@ -139,64 +139,78 @@
         border: 2px solid rgb(255, 3, 124);
         background-color: rgb(17, 17, 17);
     }
-    #celeb-container{
+
+    #celeb-container {
         padding: 2rem 15%;
     }
-    .user-instructions-container{
+
+    .user-instructions-container {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
     }
-    .user-instructions{
+
+    .user-instructions {
         background-color: transparent;
         color: white;
     }
-    .user-instructions:active{
+
+    .user-instructions:active {
         background-color: transparent;
         color: white;
     }
-    .user-instructions:focus{
+
+    .user-instructions:focus {
         background-color: transparent;
         color: white;
     }
-    .btn-continue-detail{
+
+    .btn-continue-detail {
         background-color: rgb(255, 3, 124);
         color: white;
         width: 65%;
         margin: 10px auto;
     }
-    .btn-continue-detail:hover{
+
+    .btn-continue-detail:hover {
         color: white !important;
     }
-    @media screen and (max-width:800px){
-        .occasion-container{
+
+    @media screen and (max-width:800px) {
+        .occasion-container {
             grid-template-columns: 1fr 1fr 1fr;
             margin: 0px 0px;
             width: 100%;
         }
-        #celeb-container{
+
+        #celeb-container {
             padding: 2rem 5%;
         }
-        .request-detail{
+
+        .request-detail {
             width: 100%;
         }
     }
+
     @media screen and (max-width:500px) {
-        .occasion-container{
+        .occasion-container {
             grid-template-columns: 1fr 1fr;
         }
     }
 </style>
 <form method="POST" id="celeb-container">
+
     <div class="container">
         <div class="celeb-user">
             <img class="celeb-image" src="{{cameo.image.url}}" alt="">
             <p class="celeb-name">New request for Lily Allen</p>
             <p style="font-size: 1.1rem;">Who is this for?</p>
+            <p style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);"
+                v-if="error.find((element)=>element == 'receipent')">*Please select the receipent
+            </p>
             <div class="for-icon">
                 <input type="text" name="request-type" :value="receipent" hidden>
-
                 <div @click="toggleGift" class="request-type">
                     <div class="request-icon" :class="{ 'request-active': receipent == 'gift' }">
                         <i class="fas fa-gifts"></i>
@@ -213,28 +227,46 @@
             </div>
             <div class="request-detail">
                 <div class="request-input-container ">
+                    <p v-if="error.find((element)=>element == 'to')"
+                        style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);">*This field
+                        is
+                        required</p>
                     <label for="to">To</label>
                     <input placeholder="John" v-model="to" type="text" name="to" class="request-to text-white">
                 </div>
                 <div v-if="receipent == 'gift'" class="request-input-container">
+                    <p v-if="error.find((element)=>element == 'from')"
+                        style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);">*This field
+                        is required</p>
                     <label for="from">From</label>
-                    <input placeholder="James" type="text" name="from" class="request-to">
+                    <input v-model="from" style="color: white;" placeholder="James" type="text" name="from"
+                        class="request-to">
                 </div>
+                <p v-if="error.find((element)=>element == 'pronounce')"
+                    style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);">*This field
+                    is
+                    required</p>
                 <label for="pronounce">Pronounce</label>
                 <select v-model="pronounce" class="request-pron-select text-white mb-5 form-select" name="pronounce"
                     aria-label="Default select example">
                     <option class="request-select-items" selected>Select...</option>
-                    <option class="request-select-items" value="they/them">They/Them: "Wish them a happy birthday!"</option>
+                    <option class="request-select-items" value="they/them">They/Them: "Wish them a happy birthday!"
+                    </option>
                     <option class="request-select-items" value="she/her">She/Her: "Wish her a happy birthday!"</option>
                     <option class="request-select-items" value="he/him">He/Him: "Wish him a happy birthday!"</option>
-                    <option class="request-select-items" value="inrequest">Pronoun not listed - will clarify in request</option>
+                    <option class="request-select-items" value="inrequest">Pronoun not listed - will clarify in request
+                    </option>
 
                 </select>
             </div>
         </div>
     </div>
     <div class="container" id="celeb-container">
+        <p v-if="error.find((element)=>element == 'occasion')"
+            style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);">*Please select the
+            occasion</p>
         <p class="request-occasion-title">Select an occasion</p>
+
         <input type="text" hidden :value="occasion">
         <div class="occasion-container">
             <div style="display: flex;justify-content: center;align-items: center;flex-direction: column;">
@@ -357,30 +389,52 @@
     <div class="container">
         <div class="user-instruction-container">
             <p style="font-size: 1.3rem;font-weight: bold;">Instructions</p>
+            <p v-if="error.find((element)=>element == 'instructions')"
+                style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);">*Please specify your
+                requirements in detail</p>
             <p style="margin-bottom: 3px;">My instruction for {{cameo.first_name|add:" "|add:cameo.last_name}} are</p>
-            <textarea v-model="instructions" style="margin-bottom: 1rem;" name="instruction" id="" cols="30" rows="7" placeholder="My partner (Tom) is turning 34 on Friday. Please wish him a happy birthday from me (Cary). We’ve been together for 3 yrs & met on Tinder. He’s your biggest fan - a bday shoutout from you will make his day!" class="form-control user-instructions"></textarea>
-            <p style="font-size: 1.1rem;color: rgba(255, 255, 255, 0.425);">Don't forget to add pronunciation, it really helps.</p>
+            <textarea v-model="instructions" style="margin-bottom: 1rem;" name="instruction" id="" cols="30" rows="7"
+                placeholder="My partner (Tom) is turning 34 on Friday. Please wish him a happy birthday from me (Cary). We’ve been together for 3 yrs & met on Tinder. He’s your biggest fan - a bday shoutout from you will make his day!"
+                class="form-control user-instructions"></textarea>
+            <p style="font-size: 1.1rem;color: rgba(255, 255, 255, 0.425);">Don't forget to add pronunciation, it really
+                helps.</p>
             <div class="form-check">
-                <input v-model="hideCameo" class="form-check-input check-input-lg" type="checkbox" value="" id="flexCheckDefault">
+                <input style="background-color: rgb(255, 3, 124);" v-model="hideCameo" class="form-check-input "
+                    type="checkbox" value="" id="flexCheckDefault">
                 <label style="font-size: 1.1rem;" class="form-check-label" for="flexCheckDefault">
                     Hide this video from {{cameo.first_name|add:" "|add:cameo.last_name}}'s profile
                 </label>
             </div>
-            <div style="width: 100%;display: grid;place-items: center;">
-                <button @click="submitRequest" class="btn btn-continue-detail">Continue</button>
+            <p v-if="error.length > 0" style="font-size: .9rem;font-weight: bol;margin: 0px;color: rgb(255, 3, 124);">
+                *Please
+                scroll up and
+                fix the error*</p>
+            <div style="width: 100%;display: grid;place-items: center;" class="mt-2">
+                <button v-if="!loading" @click="submitRequest" class="btn btn-continue-detail">Continue</button>
+                <button v-if="loading" class="btn btn-continue-detail">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </button>
             </div>
         </div>
 </form>
-<script defer>
+
+<script defer type="application/javascript">
     const vue = new Vue({
         el: '#celeb-container',
         data: {
+            loading: false,
             receipent: '',
             occasion: '',
             to: '',
+            from: '',
             pronounce: '',
             instructions: '',
             hideCameo: false,
+            error: []
         },
         methods: {
             toggleGift: function () {
@@ -392,9 +446,60 @@
             selectOccasion: function (occasion) {
                 this.occasion = occasion
             },
-            submitRequest: function (e) {
+            submitRequest: async function (e) {
                 e.preventDefault()
+                this.loading = true
+                this.error = []
                 console.log(this.to, this.pronounce, this.instructions, this.hideCameo, this.receipent, this.occasion)
+                if (this.receipent == '') {
+                    this.error.push('receipent')
+                }
+                if (this.occasion == '') {
+                    this.error.push('occasion')
+                }
+                if (this.to == '') {
+                    this.error.push('to')
+                }
+                if (this.pronounce == '') {
+                    this.error.push('pronounce')
+                }
+                if (this.instructions == '') {
+                    this.error.push('instructions')
+                }
+                if (this.receipent == 'gift') {
+                    if (this.from == '')
+                        this.error.push('from')
+                }
+                if (this.error.length == 0) {
+
+                    let data = new FormData();
+                    data.append("to", this.to)
+                    data.append("receipent", this.receipent)
+                    data.append("occasion", this.occasion)
+                    data.append("instructions", this.instructions)
+                    data.append('cameo_id', "{{cameo.id}}")
+                    data.append('cameo_username', "{{cameo.username}}")
+                    data.append('pronounce', this.pronounce)
+
+                    if (this.receipent == 'gift') {
+                        data.append("from", this.from)
+                    }
+                    data.append("hideCameo", this.hideCameo)
+                    try {
+                        var response = await axios.post('http://127.0.0.1:8000/book/create-booking/', data, {
+                            headers: {
+                                "Authorization": "Token b72022c633dfe6c6eb2bbca6e0c35ab19b079aa4",
+                                "Content-Type": "application/json"
+                            }
+                        })
+                        this.loading = false
+                        location.href = `/payment/start/${response.data.order_id}`
+                    }
+                    catch (e) {
+                        console.warn(e);
+                    }
+                }
+                this.loading = false
             }
         }
     })

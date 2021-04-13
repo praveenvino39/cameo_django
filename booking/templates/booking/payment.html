@@ -1,0 +1,313 @@
+{% extends 'cameo/base.html' %}
+
+{% block body %}
+<style>
+    .payment-global-container {
+        padding: 0px 7rem;
+        margin-top: 10px;
+    }
+
+    .container {
+        margin-bottom: 2.5rem;
+        background-color: rgb(28, 28, 28);
+        border-radius: 7px;
+        padding: 2rem 3rem;
+    }
+
+    .celeb-user {
+        display: flex;
+        justify-content: center !important;
+        /* align-items: center; */
+        flex-direction: column;
+    }
+
+    .celeb-image {
+        border-radius: 150px;
+        width: 100px;
+        height: 100px;
+        margin: 1.6rem;
+        border: 3px solid white
+    }
+
+    .celeb-name {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+
+    .for-icon {
+        font-size: 1.5rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .request-icon {
+        border: 2px solid white;
+        height: 50px;
+        width: 50px;
+        display: grid;
+        place-items: center;
+        border-radius: 100px;
+        margin: 0px 1rem;
+    }
+
+    .request-type {
+        margin: 0px 1rem;
+        display: grid;
+        place-items: center;
+    }
+
+    .request-type:hover>.request-icon {
+        cursor: pointer;
+        background-color: rgb(17, 17, 17);
+    }
+
+    .request-active {
+        border: 2px solid rgb(255, 3, 124);
+        background-color: rgb(17, 17, 17);
+    }
+
+    .request-type:hover {
+        cursor: pointer;
+    }
+
+    .request-detail {
+        width: 70%;
+    }
+
+    .request-to {
+        background-color: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.219);
+        padding: 7px 10px;
+        border-radius: 5px;
+        height: 55px;
+    }
+
+    .request-input-container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .form-select {
+        background-color: transparent;
+    }
+
+    .request-pron-select {
+        border: 1px solid rgba(255, 255, 255, 0.219);
+        background-color: transparent;
+        height: 55px;
+    }
+
+    .request-select-items {
+        background-color: rgb(28, 28, 28);
+    }
+
+    .delivery-type-container {
+        width: 60%;
+        background-color: rgb(37, 37, 37);
+        border-radius: 3px;
+        margin: 0px auto;
+        padding: 1rem 2rem;
+    }
+
+    .payment-section-heading {
+        font-size: 1.2rem;
+        font-weight: bold;
+    }
+
+    .summary-container {
+        width: 60%;
+        margin: 0px auto;
+        overflow: hidden;
+    }
+
+    .summary-heading-container {
+        background-color: rgb(37, 37, 37);
+        padding: 1rem 2rem;
+        display: flex;
+        /* justify-content: center; */
+        align-items: center;
+        border-radius: 7px 7px 0px 0px;
+        position: relative;
+        border-bottom: 1px dashed rgba(255, 255, 255, 0.466);
+    }
+
+    .cut-left {
+        width: 50px;
+        height: 40px;
+        border-radius: 100px;
+        position: absolute;
+        bottom: -25px;
+        left: -35px;
+        background-color: rgb(28, 28, 28);
+    }
+
+    .cut-right {
+        width: 50px;
+        height: 40px;
+        border-radius: 100px;
+        position: absolute;
+        bottom: -25px;
+        background-color: rgb(28, 28, 28);
+        right: -35px;
+    }
+
+    .summary-body-container {
+        background-color: rgb(37, 37, 37);
+        padding: 1rem 2rem;
+    }
+
+    .receipt-row {
+        font-size: 1.2rem;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .delivery-radio:checked {
+        background-color: transparent;
+        border: 2px solid rgb(255, 3, 124);
+    }
+
+
+    @media screen and (max-width:800px) {
+        .payment-global-container {
+            padding: 0px 1rem;
+        }
+
+        .container {
+            max-width: 100%;
+        }
+
+        .summary-container {
+            width: 90%;
+        }
+
+        .delivery-type-container {
+            width: 90%;
+        }
+    }
+
+    @media screen and (max-width:550px) {
+        .container {
+            padding: 1rem 1rem;
+        }
+
+        .payment-global-container {
+            padding: 0px .5rem;
+        }
+    }
+</style>
+<div class="payment-global-container" id="payment-global-container">
+    <div class="container">
+        <div class="celeb-user">
+            <p style="text-align: left;font-size: 2rem;font-weight: bold;">Payment info</p>
+            <div class="delivery-type-container">
+                <p class="payment-section-heading">Choose you delivery</p>
+                <div style="font-size: 1.1rem;line-height: 1.1;" class="form-check">
+                    <input class="form-check-input delivery-radio" type="radio" name="flexRadioDefault"
+                        id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1">
+                        Standard delivery (Free)<br>
+                        <span style="font-size: .9rem; ">2-7 Days</span>
+                    </label>
+                </div>
+                <div style="font-size: 1.1rem;line-height: 1.1;margin-top: 1.5rem;" class="form-check">
+                    <input class="form-check-input delivery-radio" type="radio" name="flexRadioDefault"
+                        id="flexRadioDefault2" checked>
+                    <label class="form-check-label" for="flexRadioDefault2">
+                        Get it delivered in one day!(+$100)<br>
+                        <span style="font-size: .9rem; ">Less than 24Hrs</span>
+                    </label>
+                </div>
+            </div>
+            <div class="summary-container" style="margin-top: 2rem;">
+                <div class="summary-heading-container">
+                    <div class="cut-left"></div>
+                    <div class="cut-right"></div>
+                    <p style="margin: 0px;" class="payment-section-heading">Summary</p>
+                </div>
+                <div class="summary-body-container">
+                    <div class="receipt-row">
+                        <p>Classic Cameo</p>
+                        <p>{{booking.currency_code}} {{booking.price}}</p>
+                    </div>
+                    <div class="receipt-row">
+                        <p>Expedited Cameo</p>
+                        <p>USD 100</p>
+                    </div>
+                    <div class="receipt-row">
+                        <p>Service fee</p>
+                        <p>$12</p>
+                    </div>
+                    <hr style="margin: 0px;margin-bottom:10px;height: 2px;">
+                    <div style="font-size: 1.5rem;font-weight: bold;color: rgb(69, 255, 255);" class="receipt-row">
+                        <p>Total</p>
+                        <p>{{booking.currency_code}} {{booking.price|add:100|add:12}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="summary-container" style="margin-top: 2rem;">
+                <div class="summary-heading-container">
+                    <div class="cut-left"></div>
+                    <div class="cut-right"></div>
+                    <p style="margin: 0px;" class="payment-section-heading">Payment method</p>
+                </div>
+                <div class="summary-body-container">
+                    <div style="font-size: 1.1rem;" class="form-check">
+                        <input checked class="form-check-input delivery-radio" @click="toggleStripe" type="radio"
+                            name="flexRadioDefault" id="stripe">
+                        <label class="form-check-label" for="stripe">
+                            Stripe
+                        </label>
+                    </div>
+                    <div style="font-size: 1.1rem;margin-top: 1.5rem;" class="form-check">
+                        <input class="form-check-input delivery-radio" @click="togglePaypal" type="radio"
+                            name="flexRadioDefault" id="paypal">
+                        <label style="margin:0px ;" class="form-check-label" for="paypal">
+                            Paypal
+                        </label>
+                    </div>
+                    <div v-if="payment_method == 'stripe'"
+                        style="margin-top: 1.1rem;border: 1px solid white;padding: 10px 15px;border-radius: 5px;"
+                        class="StripeElement StripeElement--empty">
+                        <div class="__PrivateStripeElement"
+                            style="margin: 0px !important; padding: 0px !important; border: none !important; display: block !important; background: transparent !important; position: relative !important; opacity: 1 !important;">
+                            <iframe name="__privateStripeFrame6605" frameborder="0" allowtransparency="true"
+                                scrolling="no" allow="payment *"
+                                src="https://js.stripe.com/v3/elements-inner-card-2589b82748ee7e4275aa5bf5332acd2b.html#wait=false&amp;style[base][iconColor]=%23F3F4FE&amp;style[base][color]=%23FFFFFF&amp;style[base][fontFamily]=%22cerebri%22%2C+sans-serif&amp;style[base][fontWeight]=400&amp;style[base][letterSpacing]=-0.015rem&amp;style[invalid][color]=%23FF0761&amp;style[invalid][iconColor]=%23FF0761&amp;rtl=false&amp;componentName=card&amp;keyMode=live&amp;apiKey=pk_live_YR2G0JQsuTK4cw7mTUHl4TTW&amp;referrer=https%3A%2F%2Fwww.cameo.com%2Flilyallen%2Fbook%23payments&amp;controllerId=__privateStripeController6601"
+                                title="Secure card payment input frame"
+                                style="border: none !important; margin: 0px !important; padding: 0px !important; width: 1px !important; min-width: 100% !important; overflow: hidden !important; display: block !important; user-select: none !important; will-change: transform !important; height: 16.8px;"></iframe><input
+                                class="__PrivateStripeElement-input" aria-hidden="true" aria-label=" "
+                                autocomplete="false" maxlength="1"
+                                style="border: none !important; display: block !important; position: absolute !important; height: 1px !important; top: -1px !important; left: 0px !important; padding: 0px !important; margin: 0px !important; width: 100% !important; opacity: 0 !important; background: transparent !important; pointer-events: none !important; font-size: 16px !important;">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script defer>
+    let vue = new Vue({
+        el: '#payment-global-container',
+        data: {
+            payment_method: "stripe"
+        },
+        methods: {
+            toggleStripe: function () {
+                this.payment_method = 'stripe'
+                console.log(this.payment_method);
+            },
+            togglePaypal: function () {
+                this.payment_method = 'paypal'
+                console.log(this.payment_method);
+            }
+        }
+    })
+</script>
+
+{% endblock %}
