@@ -60,8 +60,8 @@
 
 </style>
   <!-- Modal -->
-  <div class="modal fade " id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" id="loginform">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title text-center" id="exampleModalLabel ">Log in to Cameo</h5>
@@ -73,11 +73,36 @@
             <p style="width: 100%;text-align: center;margin-top: 10px;">OR</p>
             <form action="/login" method="POST">
                 {% csrf_token %}
-            <input required type="type" name="username"  placeholder="Username" class="login-input" >
-            <input required type="password" name="password" placeholder="password" class="login-input mt-2" >
+            <input v-model="username" required type="type" name="username"  placeholder="Username" class="login-input" >
+            <input v-model="password" required type="password" name="password" placeholder="password" class="login-input mt-2" >
             <button class="login-email mt-2">Login with email</button>
             </form>
         </div>
       </div>
     </div>
   </div>
+  <script defer lang="application/javascript">
+      let loginVue = new Vue({
+          el: '#loginform',
+          data: {
+              username: '',
+              password: ''
+          },
+          methods: {
+              login: async function(e){
+                  e.preventDefault()
+                  let data = new FormData()
+                  data.append('username', this.username)
+                  data.append('password', this.password)
+                  try {
+                      const response = await axios.post('/login/user', data)
+                      localStorage.setItem("auth_token",response.data.token)
+                      location.href = '/login'
+                  } catch (error) {
+                      console.warn(error)
+                  }
+                  console.log(this.username, this.password);
+              }
+          }
+      })
+  </script>

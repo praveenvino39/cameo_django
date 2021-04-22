@@ -1,5 +1,6 @@
 from django.urls import path
 from cameo import views
+from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('', view=views.homepage, name='homepage'),

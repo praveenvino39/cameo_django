@@ -169,7 +169,10 @@
         background-color: transparent;
         border: 2px solid rgb(255, 3, 124);
     }
-
+    .payment-button{
+        width: 90%;
+        margin: 0px auto;
+    }
 
     @media screen and (max-width:800px) {
         .payment-global-container {
@@ -188,14 +191,30 @@
             width: 90%;
         }
     }
-
+    .delivery-section-typography{
+        font-size: 1.1rem;
+        line-height: 1.3;
+    }
+    .delivery-section-subtitle{
+        font-size: .9rem;
+    }
     @media screen and (max-width:550px) {
         .container {
-            padding: 1rem 1rem;
+            padding: 1rem .5rem;
         }
 
         .payment-global-container {
             padding: 0px .5rem;
+        }
+        .receipt-row{
+            font-size: 1rem;
+        }
+        .delivery-section-typography{
+            font-size: .9rem;
+            margin: 1rem 0px;
+        }
+        .delivery-section-subtitle{
+            font-size: .8rem;
         }
     }
 </style>
@@ -205,20 +224,20 @@
             <p style="text-align: left;font-size: 2rem;font-weight: bold;">Payment info</p>
             <div class="delivery-type-container">
                 <p class="payment-section-heading">Choose you delivery</p>
-                <div style="font-size: 1.1rem;line-height: 1.1;" class="form-check">
-                    <input class="form-check-input delivery-radio" type="radio" name="flexRadioDefault"
+                <div class="form-check delivery-section-typography">
+                    <input  @click="toggleStandard" checked class="form-check-input delivery-radio" type="radio" name="flexRadioDefault"
                         id="flexRadioDefault1">
                     <label class="form-check-label" for="flexRadioDefault1">
                         Standard delivery (Free)<br>
-                        <span style="font-size: .9rem; ">2-7 Days</span>
+                        <span class="delivery-section-subtitle">2-7 Days</span>
                     </label>
                 </div>
-                <div style="font-size: 1.1rem;line-height: 1.1;margin-top: 1.5rem;" class="form-check">
-                    <input class="form-check-input delivery-radio" type="radio" name="flexRadioDefault"
-                        id="flexRadioDefault2" checked>
+                <div class="form-check delivery-section-typography">
+                    <input @click="toggleExpress" class="form-check-input delivery-radio" type="radio" name="flexRadioDefault"
+                        id="flexRadioDefault2">
                     <label class="form-check-label" for="flexRadioDefault2">
                         Get it delivered in one day!(+$100)<br>
-                        <span style="font-size: .9rem; ">Less than 24Hrs</span>
+                        <span class="delivery-section-subtitle">Less than 24Hrs</span>
                     </label>
                 </div>
             </div>
@@ -233,18 +252,18 @@
                         <p>Classic Cameo</p>
                         <p>{{booking.currency_code}} {{booking.price}}</p>
                     </div>
-                    <div class="receipt-row">
+                    <div v-if="delivery_type == 'express'" class="receipt-row">
                         <p>Expedited Cameo</p>
                         <p>USD 100</p>
                     </div>
                     <div class="receipt-row">
                         <p>Service fee</p>
-                        <p>$12</p>
+                        <p>{{booking.currency_code}} [[service_fee]]</p>
                     </div>
                     <hr style="margin: 0px;margin-bottom:10px;height: 2px;">
                     <div style="font-size: 1.5rem;font-weight: bold;color: rgb(69, 255, 255);" class="receipt-row">
                         <p>Total</p>
-                        <p>{{booking.currency_code}} {{booking.price|add:100|add:12}}</p>
+                        <p>{{booking.currency_code}} [[total]]</p>
                     </div>
                 </div>
             </div>
@@ -257,34 +276,30 @@
                 <div class="summary-body-container">
                     <div style="font-size: 1.1rem;" class="form-check">
                         <input checked class="form-check-input delivery-radio" @click="toggleStripe" type="radio"
-                            name="flexRadioDefault" id="stripe">
+                            name="paymenttype" id="stripe">
                         <label class="form-check-label" for="stripe">
                             Stripe
                         </label>
                     </div>
                     <div style="font-size: 1.1rem;margin-top: 1.5rem;" class="form-check">
                         <input class="form-check-input delivery-radio" @click="togglePaypal" type="radio"
-                            name="flexRadioDefault" id="paypal">
+                            name="paymenttype" id="paypal">
                         <label style="margin:0px ;" class="form-check-label" for="paypal">
                             Paypal
                         </label>
                     </div>
-                    <div v-if="payment_method == 'stripe'"
-                        style="margin-top: 1.1rem;border: 1px solid white;padding: 10px 15px;border-radius: 5px;"
-                        class="StripeElement StripeElement--empty">
-                        <div class="__PrivateStripeElement"
-                            style="margin: 0px !important; padding: 0px !important; border: none !important; display: block !important; background: transparent !important; position: relative !important; opacity: 1 !important;">
-                            <iframe name="__privateStripeFrame6605" frameborder="0" allowtransparency="true"
-                                scrolling="no" allow="payment *"
-                                src="https://js.stripe.com/v3/elements-inner-card-2589b82748ee7e4275aa5bf5332acd2b.html#wait=false&amp;style[base][iconColor]=%23F3F4FE&amp;style[base][color]=%23FFFFFF&amp;style[base][fontFamily]=%22cerebri%22%2C+sans-serif&amp;style[base][fontWeight]=400&amp;style[base][letterSpacing]=-0.015rem&amp;style[invalid][color]=%23FF0761&amp;style[invalid][iconColor]=%23FF0761&amp;rtl=false&amp;componentName=card&amp;keyMode=live&amp;apiKey=pk_live_YR2G0JQsuTK4cw7mTUHl4TTW&amp;referrer=https%3A%2F%2Fwww.cameo.com%2Flilyallen%2Fbook%23payments&amp;controllerId=__privateStripeController6601"
-                                title="Secure card payment input frame"
-                                style="border: none !important; margin: 0px !important; padding: 0px !important; width: 1px !important; min-width: 100% !important; overflow: hidden !important; display: block !important; user-select: none !important; will-change: transform !important; height: 16.8px;"></iframe><input
-                                class="__PrivateStripeElement-input" aria-hidden="true" aria-label=" "
-                                autocomplete="false" maxlength="1"
-                                style="border: none !important; display: block !important; position: absolute !important; height: 1px !important; top: -1px !important; left: 0px !important; padding: 0px !important; margin: 0px !important; width: 100% !important; opacity: 0 !important; background: transparent !important; pointer-events: none !important; font-size: 16px !important;">
-                        </div>
+                    <div style="display: grid;place-items: center; margin-top: 1rem;">
+                        <form v-if="payment_method == 'stripe'" method="POST">
+                            {% csrf_token %}
+                            <input value="stripe" hidden type="text" name="payment_method">
+                            <button class="btn payment-button btn-primary">Stripe</button>
+                        </form>
+                        <form v-if="payment_method == 'paypal'" method="POST">
+                            {% csrf_token %}
+                            <input value="paypal" hidden type="text" name="payment_method">
+                            <button v-if="payment_method == 'paypal'" class="btn payment-button btn-primary">Paypal</button>
+                        </form>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -292,10 +307,30 @@
 </div>
 </div>
 <script defer>
-    let vue = new Vue({
+    var paymentVue = new Vue({
         el: '#payment-global-container',
+        delimiters: ["[[","]]"],        
         data: {
-            payment_method: "stripe"
+            payment_method: "stripe",
+            delivery_type: "standard",
+            service_fee: 0,
+            total: 0
+        },
+        created: function(){
+            var cameoPrice = Number.parseFloat("{{booking.price}}")
+            this.service_fee = (cameoPrice/100)*5
+            this.total = cameoPrice + this.service_fee
+            console.log(typeof(this.total))  
+        },
+        watch: {
+            delivery_type: function(newVal, oldVal){
+                if(newVal == 'express'){
+                    this.total += 100;
+                } else if(newVal = 'standard'){
+                    var cameoPrice = Number.parseFloat("{{booking.price}}")
+                    this.total = cameoPrice + this.service_fee
+                }
+            },
         },
         methods: {
             toggleStripe: function () {
@@ -305,6 +340,12 @@
             togglePaypal: function () {
                 this.payment_method = 'paypal'
                 console.log(this.payment_method);
+            },
+            toggleExpress: function (){
+                this.delivery_type = 'express'
+            },
+            toggleStandard: function () {
+                this.delivery_type = 'standard'
             }
         }
     })

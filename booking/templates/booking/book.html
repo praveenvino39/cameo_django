@@ -199,14 +199,14 @@
         }
     }
 </style>
-<form method="POST" id="celeb-container">
+<form method="POST" id="book-celebrity">
 
     <div class="container">
         <div class="celeb-user">
             <img class="celeb-image" src="{{cameo.image.url}}" alt="">
             <p class="celeb-name">New request for Lily Allen</p>
             <p style="font-size: 1.1rem;">Who is this for?</p>
-            <p style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);"
+            <p style="font-size: .9rem;font-weight: normal;margin: 0px;color: rgb(255, 3, 124);"
                 v-if="error.find((element)=>element == 'receipent')">*Please select the receipent
             </p>
             <div class="for-icon">
@@ -228,7 +228,7 @@
             <div class="request-detail">
                 <div class="request-input-container ">
                     <p v-if="error.find((element)=>element == 'to')"
-                        style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);">*This field
+                        style="font-size: .9rem;font-weight: normal;margin: 0px;color: rgb(255, 3, 124);">*This field
                         is
                         required</p>
                     <label for="to">To</label>
@@ -236,14 +236,14 @@
                 </div>
                 <div v-if="receipent == 'gift'" class="request-input-container">
                     <p v-if="error.find((element)=>element == 'from')"
-                        style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);">*This field
+                        style="font-size: .9rem;font-weight: normal;margin: 0px;color: rgb(255, 3, 124);">*This field
                         is required</p>
                     <label for="from">From</label>
                     <input v-model="from" style="color: white;" placeholder="James" type="text" name="from"
                         class="request-to">
                 </div>
                 <p v-if="error.find((element)=>element == 'pronounce')"
-                    style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);">*This field
+                    style="font-size: .9rem;font-weight: normal;margin: 0px;color: rgb(255, 3, 124);">*This field
                     is
                     required</p>
                 <label for="pronounce">Pronounce</label>
@@ -263,7 +263,7 @@
     </div>
     <div class="container" id="celeb-container">
         <p v-if="error.find((element)=>element == 'occasion')"
-            style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);">*Please select the
+            style="font-size: .9rem;font-weight: normal;margin: 0px;color: rgb(255, 3, 124);">*Please select the
             occasion</p>
         <p class="request-occasion-title">Select an occasion</p>
 
@@ -390,7 +390,7 @@
         <div class="user-instruction-container">
             <p style="font-size: 1.3rem;font-weight: bold;">Instructions</p>
             <p v-if="error.find((element)=>element == 'instructions')"
-                style="font-size: .9rem;font-weight: lighter;margin: 0px;color: rgb(255, 3, 124);">*Please specify your
+                style="font-size: .9rem;font-weight: normal;margin: 0px;color: rgb(255, 3, 124);">*Please specify your
                 requirements in detail</p>
             <p style="margin-bottom: 3px;">My instruction for {{cameo.first_name|add:" "|add:cameo.last_name}} are</p>
             <textarea v-model="instructions" style="margin-bottom: 1rem;" name="instruction" id="" cols="30" rows="7"
@@ -423,8 +423,9 @@
 </form>
 
 <script defer type="application/javascript">
-    const vue = new Vue({
-        el: '#celeb-container',
+    var app = new Vue({
+        el: '#book-celebrity',
+        delimiters: ['[[', ']]'],
         data: {
             loading: false,
             receipent: '',
@@ -486,14 +487,14 @@
                     }
                     data.append("hideCameo", this.hideCameo)
                     try {
-                        var response = await axios.post('http://127.0.0.1:8000/book/create-booking/', data, {
+                        var response = await axios.post('/book/create-booking/', data, {
                             headers: {
-                                "Authorization": "Token b72022c633dfe6c6eb2bbca6e0c35ab19b079aa4",
+                                "Authorization":`Token ${localStorage.getItem('auth_token')}`,
                                 "Content-Type": "application/json"
                             }
                         })
                         this.loading = false
-                        location.href = `/payment/start/${response.data.order_id}`
+                        location.href = `/payment/start/stripe/${response.data.order_id}`
                     }
                     catch (e) {
                         console.warn(e);
