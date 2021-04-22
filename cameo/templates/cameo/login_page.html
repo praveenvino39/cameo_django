@@ -111,7 +111,12 @@
                         src="https://img.icons8.com/color/28/000000/google-logo.png" /></i><span
                         class="text-dark">Continue with Google</span></button>
                 <p style="width: 100%;text-align: center;margin-top: 10px;">OR</p>
+                {% if next %}
+                <form action="/login?next={{next}}" method="POST">
+                {% else %}
                 <form action="/login" method="POST">
+                {% endif %}
+                
                     {% csrf_token %}
                     <input required type="type" name="username" placeholder="Username" class="login-input">
                     <input required type="password" name="password" placeholder="password" class="login-input mt-2">

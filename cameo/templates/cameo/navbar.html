@@ -171,7 +171,7 @@
                 <li class="dropdown-item">Account</li>
                 <li class="dropdown-item">Following</li>
                 {% if request.user.is_celebrity %}
-                <li class="dropdown-item">Sales <span style="padding: 0px 5px; width: 15px; height: 15px; background-color: red;border-radius: 500px;">{{user.cameo.all.count}}</span></li>
+                <li class="dropdown-item">Sales {% if new_sale != 0 %}<span style="padding: 0px 5px; width: 15px; height: 15px; background-color: red;border-radius: 500px;">{{new_sale}}</span>{% endif %}</li>
                 {% endif %}
                 <li class="dropdown-item">Purchase</li>
                 {% if request.user.is_celebrity %}

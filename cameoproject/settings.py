@@ -59,6 +59,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'cameo.context_processors.newsale_processor'
             ],
         },
     },
@@ -90,7 +91,9 @@ REST_FRAMEWORK = {
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
 AUTH_USER_MODEL = 'cameo.Cameo'
-
+LOGIN_URL = '/login/user'
+APPEND_SLASH = False
+LOGIN_REDIRECT_URL = '/login'
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME':

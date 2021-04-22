@@ -22,7 +22,9 @@ def homepage(request):
 
 
 def login_view(request):
-    return render(request, 'cameo/login_page.html')
+    print(request.GET.get("next"))
+    context = {"next": request.GET.get("next")}
+    return render(request, 'cameo/login_page.html', context=context)
 
 
 def login_user(request):
@@ -30,10 +32,21 @@ def login_user(request):
         user = Cameo.objects.filter(
             username=request.POST.get('username')).first()
         if user:
-            login(request=request, user=user)
-            token, created = Token.objects.get_or_create(user=user)
-            messages.success(request, token.key, extra_tags='authentication')
-            return redirect('homepage')
+            if user.check_password(request.POST.get('password')):
+                login(request=request, user=user)
+                token, created = Token.objects.get_or_create(user=user)
+                messages.success(request,
+                                 token.key,
+                                 extra_tags='authentication')
+                if request.GET.get("next"):
+                    return redirect('{}'.format(request.GET.get("next")))
+                else:
+                    return redirect('homepage')
+            else:
+                messages.error(request,
+                               'Username or Password invalid.',
+                               extra_tags="danger")
+                return redirect('login_page')
         else:
             messages.error(request,
                            'Username or Password invalid.',

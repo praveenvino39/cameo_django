@@ -6,11 +6,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import Booking
 import random
+from django.contrib.auth.decorators import login_required
 import stripe
 import json
 # Create your views here.
 
 
+@login_required
 def book(request, username):
     if request.method == 'GET':
         cameo = get_object_or_404(Cameo, username=username)

@@ -200,7 +200,26 @@
     }
 </style>
 <form method="POST" id="book-celebrity">
+    {% if messages %}
+<div style="margin: 10px;">
+    <div class="messages">
+        {% for message in messages %}
+        {% if not message.tags == 'authentication success' %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <p style="margin: 0px;">{{message}}</p>
+            <button type="button" class="btn-close btn-sm btn-alert" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+        </div>
+        {% else %}
+        <script>
+            localStorage.setItem('auth_token', "{{message}}")
+        </script>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
 
+{% endif %}
     <div class="container">
         <div class="celeb-user">
             <img class="celeb-image" src="{{cameo.image.url}}" alt="">
