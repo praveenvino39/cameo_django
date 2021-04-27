@@ -19,10 +19,15 @@ from django.urls.conf import include
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns = [
-    path('', include('cameo.urls')),
-    path('book/', include('booking.urls')),
-    path('payment/', include('payment.urls')),
-    path('admin/', admin.site.urls),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(
-    settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns = (
+    [
+        path("", include("cameo.urls")),
+        path("book/", include("booking.urls")),
+        path("payment/", include("payment.urls")),
+        path("profile/", include("userprofile.urls")),
+        path("order/", include("order.urls")),
+        path("admin/", admin.site.urls),
+    ]
+    + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)

@@ -171,9 +171,17 @@
                 <li class="dropdown-item">Account</li>
                 <li class="dropdown-item">Following</li>
                 {% if request.user.is_celebrity %}
-                <li class="dropdown-item">Sales {% if new_sale != 0 %}<span style="padding: 0px 5px; width: 15px; height: 15px; background-color: red;border-radius: 500px;">{{new_sale}}</span>{% endif %}</li>
+                <a href="{% url 'sales' %}">
+                    <li class="dropdown-item">Sales {% if new_sale != 0 %}<span
+                            style="padding: 0px 5px; width: 15px; height: 15px; background-color: red;border-radius: 500px;">{{new_sale}}</span>
+                        {% endif %}</li>
+                </a>
                 {% endif %}
-                <li class="dropdown-item">Purchase</li>
+                <a href="{% url 'purchase' %}">
+                    <li class="dropdown-item">Purchase {% if purchase_update != 0 %}<span
+                            style="padding: 0px 5px; width: 15px; height: 15px; background-color: red;border-radius: 500px;">{{purchase_update}}</span>
+                        {% endif %}</li>
+                </a>
                 {% if request.user.is_celebrity %}
                 <li class="dropdown-item">Cameos</li>
                 {% endif %}
@@ -204,7 +212,7 @@
             toggleMenu: function () {
                 this.showMenu = !this.showMenu;
             },
-            logout: function(e){
+            logout: function (e) {
                 e.preventDefault()
                 localStorage.removeItem('auth_token')
                 this.$refs.logoutform.submit()

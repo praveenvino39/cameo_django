@@ -4,6 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
@@ -46,10 +56,29 @@
             background-color: rgb(16, 16, 16);
             color: white;
         }
+
+        a {
+            text-decoration: none;
+        }
     </style>
 </head>
 
 <body>
+    {% if messages %}
+    <div style="margin: 10px;">
+        <div class="messages">
+            {% for message in messages %}
+            {% if not message.tags == 'authentication success' %}
+            {% else %}
+            <script>
+                localStorage.setItem('auth_token', "{{message}}")
+            </script>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    {% endif %}
     {% include 'cameo/navbar.html' %}
     {% block body %}
     {% endblock %}

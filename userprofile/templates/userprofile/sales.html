@@ -1,0 +1,196 @@
+{% extends 'cameo/base.html' %}
+
+{% block body %}
+<style>
+    .sale-table {
+        background-color: #252525 !important;
+        color: white;
+        text-align: center;
+    }
+
+    .order:hover {
+        background-color: gray;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+    .modal-footer {
+        background-color: #1c1c1c;
+        border-top: 0px;
+    }
+
+    .basic-info {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .instruction {
+        background-color: #252525;
+        padding: 1rem;
+        border-radius: 5px;
+        min-height: 100px;
+    }
+
+    .file-input,
+    .file-input:focus {
+        color: white;
+        background-color: #252525;
+        border: 0px;
+    }
+
+    .errors {
+        background-color: #1c1c1c;
+        color: rgb(255, 3, 124);
+        padding: 5px 10px;
+        display: grid;
+        place-items: center;
+        padding-bottom: 20px;
+    }
+
+    .cameo-video-container {
+        margin-top: 30px;
+        text-align: center;
+        color: rgb(255, 3, 124);
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .cameo-video {
+        margin: 0px;
+    }
+
+    .cameo-video:focus {
+        outline: none;
+    }
+</style>
+<div id="order_info" class="container mt-3">
+    <table class="table sale-table">
+        <thead>
+            <tr>
+                <th scope="col">#Order ID</th>
+                <th scope="col">Requested User</th>
+                <th scope="col">Occasion</th>
+                <th scope="col">Status</th>
+                <th scope="col">Payment Method</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in sales %}
+            <tr class="order" data-bs-toggle="modal" data-bs-target="#modal-{{sale.order_id}}">
+                <th scope="row">{{sale.order_id}}</th>
+                <td scope="row">{{sale.requested_user_username}}</td>
+                <td scope="row">{{sale.occasion}}</td>
+                <td scope="row">{{sale.order_status}}</td>
+                <td scope="row">{{sale.payment_method}}</td>
+            </tr>
+            <!-- Modal -->
+            <div class="modal fade" id="modal-{{sale.order_id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">#{{sale.order_id}}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="sale-detail-container">
+                                <p>Requested User: {{sale.requested_user_username}}</p>
+                                <div class="basic-info">
+                                    {% if sale.fromName != None %}
+                                    <p>From: {{sale.fromName}}</p>
+                                    {% else %}
+                                    <p
+                                        style="padding: 1px 7px;background-color: rgb(255, 3, 124);border-radius: 1000px;">
+                                        Self</p>
+
+                                    {% endif %}
+                                    <p>To: {{sale.toName}}</p>
+                                </div>
+                                <div class="detail-info">
+                                    <div class="basic-info">
+                                        {% if sale.pronounce != None %}
+                                        <p>Pronounce: {{sale.pronounce|title}}</p>
+                                        {% endif %}
+                                        <p>Occasion: {{sale.occasion}}</p>
+                                    </div>
+                                    <div class="intructions-container">
+                                        <p style="margin: 0px;">Instructions</p>
+                                        <div class="instruction">
+                                            <p>{{sale.instructions}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% if sale.order_status != "completed" %}
+                                <form enctype="multipart/form-data" onsubmit="uploadFile(event, '{{sale.order_id}}')"
+                                    id="form-{{sale.order_id}}" method="POST">
+                                    {% csrf_token %}
+                                    <div class="mt-3">
+                                        <label for="formFile" class="form-label">Cameo</label>
+                                        <input required class="form-control file-input" type="file"
+                                            id="formFile-{{sale.order_id}}">
+                                    </div>
+                            </div>
+                        </div>
+                        <div id="status-{{sale.order_id}}" class="errors"></div>
+                        <div id="loader-{{sale.order_id}}"
+                            style="background-color: #1c1c1c; display: none;width: 100%;place-items: center;">
+                            <div class="spinner-border" style="background-color: #1c1c1c;" role="status"><span
+                                    class="visually-hidden">Loading...</span></div>
+                        </div>
+
+                        <div class="modal-footer" id="modal-btn-{{sale.order_id}}">
+                            <button type="submit" class="btn btn-primary">Send cameo</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                        </form>
+                        {% else %}
+                        <div class="cameo-video-container">
+                            <video style="width: 100%;" id="cameo-video-{{sale.order_id}}" class="cameo-video"
+                                src="{{sale.file.first.cameo_file.url}}" preload="auto" controls autoplay></video>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script defer>
+
+    async function uploadFile(event, order_id) {
+        event.preventDefault()
+        document.getElementById("status-" + order_id).innerHTML = ""
+        document.getElementById("modal-btn-" + order_id).style.display = "none"
+        document.getElementById("loader-" + order_id).style.display = "grid"
+        let cameoFile = document.getElementById("formFile-" + order_id).files[0]
+        let formData = new FormData()
+        formData.append('cameoFile', cameoFile)
+        formData.append('order_id', order_id)
+        console.log(cameoFile);
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Token ${localStorage.getItem("auth_token")}`
+            },
+            // onUploadProgress: progressEvent => console.log(progressEvent.loaded)
+        }
+        try {
+            var response = await axios.post(`http://127.0.0.1:8000/order/send/${order_id}`, formData, config)
+            var statusMessage = document.getElementById("status-" + order_id)
+            statusMessage.innerHTML = 'Cameo sent successfully'
+            statusMessage.style.color = "rgba(28, 255, 122, 0.808)"
+            document.getElementById("loader-" + order_id).style.display = "none"
+            setTimeout(() => {
+                location.reload()
+            }, 3000)
+        } catch (error) {
+            document.getElementById("status-" + order_id).innerHTML = `${error.response.data.error}`
+            document.getElementById("loader-" + order_id).style.display = "none"
+            document.getElementById("modal-btn-" + order_id).style.display = "flex"
+            // document.getElementById("modal-btn-" + order_id).innerHTML = '<div class="modal-footer" id="modal-btn"><button type="submit" class="btn btn-primary">Send cameo</button><button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button></div>'
+            throw error
+        }
+    }
+</script>
+{% endblock %}

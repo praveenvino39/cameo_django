@@ -1,0 +1,180 @@
+{% extends 'cameo/base.html' %}
+
+{% block body %}
+<style>
+    .sale-table {
+        background-color: #252525 !important;
+        color: white;
+        text-align: center;
+    }
+
+    .order:hover {
+        background-color: gray;
+        cursor: pointer;
+        transition: .3s;
+    }
+
+    .modal-footer {
+        background-color: #1c1c1c;
+        border-top: 0px;
+    }
+
+    .basic-info {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .instruction {
+        background-color: #252525;
+        padding: 1rem;
+        border-radius: 5px;
+        min-height: 100px;
+    }
+
+    .file-input,
+    .file-input:focus {
+        color: white;
+        background-color: #252525;
+        border: 0px;
+    }
+
+    .errors {
+        background-color: #1c1c1c;
+        color: rgb(255, 3, 124);
+        padding: 5px 10px;
+        display: grid;
+        place-items: center;
+        padding-bottom: 20px;
+    }
+
+    .cameo-video-container {
+        margin-top: 30px;
+        text-align: center;
+        color: rgb(255, 3, 124);
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .cameo-video {
+        margin: 0px;
+    }
+
+    .cameo-video:focus {
+        outline: none;
+    }
+</style>
+<div id="purchase" class="container mt-3">
+    <table class="table sale-table">
+        <thead>
+            <tr>
+                <th scope="col">#Order ID</th>
+                <th scope="col">Cameo</th>
+                <th scope="col">Occasion</th>
+                <th scope="col">Status</th>
+                <th scope="col">Payment Method</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for purchase in purchases %}
+            <tr class="order" data-bs-toggle="modal" data-bs-target="#modal-{{purchase.order_id}}">
+                <th scope="row">{{purchase.order_id}}</th>
+                <td scope="row">{{purchase.cameo.first_name}} {{purchase.cameo.last_name}}</td>
+                <td scope="row">{{purchase.occasion}}</td>
+                <td scope="row">{{purchase.order_status}}</td>
+                <td scope="row">{{purchase.payment_method}}</td>
+                <!-- modal -->
+                <div class="modal fade" id="modal-{{purchase.order_id}}" tabindex="-1"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">#{{purchase.order_id}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="sale-detail-container">
+                                    <p>Requested User: {{purchase.requested_user_username}}</p>
+                                    <div class="basic-info">
+                                        {% if purchase.fromName != None %}
+                                        <p>From: {{purchase.fromName}}</p>
+                                        {% else %}
+                                        <p
+                                            style="padding: 1px 7px;background-color: rgb(255, 3, 124);border-radius: 1000px;">
+                                            Self</p>
+
+                                        {% endif %}
+                                        <p>To: {{purchase.toName}}</p>
+                                    </div>
+                                    <div class="detail-info">
+                                        <div class="basic-info">
+                                            {% if purchase.pronounce != None %}
+                                            <p>Pronounce: {{purchase.pronounce|title}}</p>
+                                            {% endif %}
+                                            <p>Occasion: {{purchase.occasion}}</p>
+                                        </div>
+                                        <div class="intructions-container">
+                                            <p style="margin: 0px;">Instructions</p>
+                                            <div class="instruction">
+                                                <p>{{purchase.instructions}}</p>
+                                            </div>
+                                        </div>
+                                        {% if purchase.order_status == "completed" %}
+                                        <div class="cameo-video-container">
+                                            <video style="width: 100%;" id="cameo-video-{{sale.order_id}}"
+                                                class="cameo-video" src="{{purchase.file.first.cameo_file.url}}"
+                                                preload="auto" controls autoplay></video>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% if not purchase.is_accepted %}
+                            <div class="modal-footer" id="modal-btn-{{sale.order_id}}">
+                                <button @click="accept({{purchase.order_id}})" type="button"
+                                    class="btn btn-success">Accept</button>
+                                <button type="button" class="btn btn-danger"
+                                    @click="openDecline({{purchase.order_id}})">Decline</button>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="modal fade" id="modal-{{purchase.order_id}}-decline" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">#{{purchase.order_id}} - Decline
+                                            Reason</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+
+                                    </div>
+                                </div>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script defer>
+    let purchaseApp = new Vue({
+        el: "#purchase",
+        delimiters: ["[[", "]]"],
+        methods: {
+            accept: async function (order_id) {
+                var response = await axios.get(`/order/accept/${order_id}`, {
+                    headers: {
+                        Authorization: `Token ${localStorage.getItem("auth_token")}`
+                    }
+                })
+                console.log(response);
+            },
+            openDecline: function (order_id) {
+                $(`#modal-${order_id}`).modal('hide')
+            }
+        }
+    })
+</script>
+{% endblock %}
