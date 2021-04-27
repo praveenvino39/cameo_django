@@ -62,6 +62,38 @@
     .cameo-video:focus {
         outline: none;
     }
+
+    .decline-reason {
+        margin: 10px 20px;
+        padding: 10px;
+        display: none;
+        border-color: rgb(255, 3, 124);
+        border-radius: 7px;
+        color: white;
+        background-color: #252525 !important;
+    }
+
+    .modal-content {
+        background-color: #1c1c1c;
+    }
+
+    .decline-reason:focus {
+        outline: none;
+    }
+
+    .btn-decline-submit {
+        display: none;
+    }
+
+    .btn-success-decline {
+        display: none;
+    }
+
+    .decline-message {
+        margin-left: 2rem;
+        color: rgb(255, 3, 124);
+        display: none;
+    }
 </style>
 <div id="purchase" class="container mt-3">
     <table class="table sale-table">
@@ -119,7 +151,7 @@
                                                 <p>{{purchase.instructions}}</p>
                                             </div>
                                         </div>
-                                        {% if purchase.order_status == "completed" %}
+                                        {% if purchase.order_status == "Completed" or purchase.order_status == "Completed Request" %}
                                         <div class="cameo-video-container">
                                             <video style="width: 100%;" id="cameo-video-{{sale.order_id}}"
                                                 class="cameo-video" src="{{purchase.file.first.cameo_file.url}}"
@@ -129,29 +161,32 @@
                                     </div>
                                 </div>
                             </div>
+                            <p class="decline-message" id="decline-message-error-{{purchase.order_id}}">Decline
+                                message
+                                shouldn't be empty*</p>
+                            <textarea required name="decline-reason" placeholder="Decline reason..."
+                                id="decline-reason-{{purchase.order_id}}" class="decline-reason" cols="30"
+                                rows="5"></textarea>
                             {% if not purchase.is_accepted %}
-                            <div class="modal-footer" id="modal-btn-{{sale.order_id}}">
-                                <button @click="accept({{purchase.order_id}})" type="button"
-                                    class="btn btn-success">Accept</button>
-                                <button type="button" class="btn btn-danger"
-                                    @click="openDecline({{purchase.order_id}})">Decline</button>
+                            {% if not purchase.order_status == 'initiated' %}
+                            {% if not purchase.decline_reason %}
+                            <div class="modal-footer" id="modal-btn-{{purchase.order_id}}">
+                                <button @click="accept({{purchase.order_id}})" id="btn-accept-{{purchase.order_id}}"
+                                    type="button" class="btn btn-success">Accept</button>
+                                <button type="button" class="btn btn-danger" id="btn-decline-{{purchase.order_id}}"
+                                    @click="openDeclineTextArea({{purchase.order_id}})">Decline</button>
+                                <button type="submit" class="btn btn-success btn-success-decline"
+                                    id="btn-decline-submit-{{purchase.order_id}}"
+                                    @click="decline({{purchase.order_id}})">Decline</button>
                             </div>
+                            {% else %}
+                            <p style="margin: 0 auto;margin-bottom: 20px;color: rgb(255, 3, 124);">You're declined this
+                                cameo</p>
+                            {% endif %}
+                            {% endif %}
                             {% endif %}
                         </div>
-                        <div class="modal fade" id="modal-{{purchase.order_id}}-decline" tabindex="-1"
-                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">#{{purchase.order_id}} - Decline
-                                            Reason</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
 
-                                    </div>
-                                </div>
 
             </tr>
             {% endfor %}
@@ -162,17 +197,57 @@
     let purchaseApp = new Vue({
         el: "#purchase",
         delimiters: ["[[", "]]"],
+        data: {
+            showDeclineReason: false,
+        },
         methods: {
             accept: async function (order_id) {
-                var response = await axios.get(`/order/accept/${order_id}`, {
-                    headers: {
-                        Authorization: `Token ${localStorage.getItem("auth_token")}`
-                    }
-                })
-                console.log(response);
+                try {
+                    var response = await axios.get(`/order/accept/${order_id}`, {
+                        headers: {
+                            Authorization: `Token ${localStorage.getItem("auth_token")}`
+                        }
+                    })
+                    document.getElementById("modal-btn-" + order_id).style.display = "none";
+                    setTimeout(()=>{
+                        window.location.reload(), 1500
+                    })
+                } catch (error) {
+                    throw error
+                }
             },
-            openDecline: function (order_id) {
-                $(`#modal-${order_id}`).modal('hide')
+            openDeclineTextArea: function (order_id) {
+                document.getElementById("btn-accept-" + order_id).style.display = "none"
+                document.getElementById("decline-reason-" + order_id).style.display = 'block';
+                document.getElementById("btn-decline-" + order_id).style.display = 'none';
+                document.getElementById("btn-decline-submit-" + order_id).style.display = 'block';
+
+
+            },
+            closeDeclineTextArea: function (order_id) {
+                document.getElementById("decline-reason-" + order_id).style.display = 'none';
+            },
+            decline: async function (order_id) {
+                let reasonMessage = document.getElementById("decline-reason-" + order_id).value
+                if (reasonMessage.length <= 0) {
+                    alert("Decline message shouldn't be empty")
+                } else {
+                    try {
+                        const data = new FormData()
+                        data.append("order_id", order_id)
+                        data.append("reason", reasonMessage)
+                        var response = await axios.post(`/order/decline`, data, {
+                            headers: {
+                                "Content-Type": "application/json",
+                                "Authorization": `Token ${localStorage.getItem("auth_token")}`
+                            }
+                        })
+                        document.getElementById("modal-btn-" + order_id).style.display = "none";
+                        window.location.reload()
+                    } catch (error) {
+                        throw error
+                    }
+                }
             }
         }
     })

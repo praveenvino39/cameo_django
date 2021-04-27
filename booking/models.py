@@ -16,6 +16,7 @@ class Booking(models.Model):
         ("initiated", "Initiated"),
         ("pending", "Pending"),
         ("completed", "Completed"),
+        ("Completed Request", "Completed Request"),
     ]
     cameo = models.ForeignKey(
         Cameo, on_delete=models.CASCADE, related_name="cameo", null=True

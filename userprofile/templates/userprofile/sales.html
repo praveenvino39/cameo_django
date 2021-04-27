@@ -120,28 +120,44 @@
                                         </div>
                                     </div>
                                 </div>
-                                {% if sale.order_status != "completed" %}
+                                {% if sale.order_status == "Completed Request" or sale.order_status == "Completed" %}
+                                <div class="cameo-video-container">
+                                    <video style="width: 100%;" id="cameo-video-{{sale.order_id}}" class="cameo-video"
+                                        src="{{sale.file.first.cameo_file.url}}" preload="auto" controls
+                                        autoplay></video>
+                                </div>
+                                <div id="status-{{sale.order_id}}" class="errors">Cameo sent successfully</div>
+                                {% endif %}
+                                {% if sale.order_status != "Completed" or sale.order_status != "Completed Request" %}
                                 <form enctype="multipart/form-data" onsubmit="uploadFile(event, '{{sale.order_id}}')"
                                     id="form-{{sale.order_id}}" method="POST">
                                     {% csrf_token %}
                                     <div class="mt-3">
+                                        
+                                        {% if sale.order_status == "Completed Request" or sale.order_status == "Completed" %}
+                                        
+                                        {% else %}
                                         <label for="formFile" class="form-label">Cameo</label>
                                         <input required class="form-control file-input" type="file"
                                             id="formFile-{{sale.order_id}}">
+                                        {% endif %}
                                     </div>
                             </div>
                         </div>
                         <div id="status-{{sale.order_id}}" class="errors"></div>
+
                         <div id="loader-{{sale.order_id}}"
                             style="background-color: #1c1c1c; display: none;width: 100%;place-items: center;">
                             <div class="spinner-border" style="background-color: #1c1c1c;" role="status"><span
                                     class="visually-hidden">Loading...</span></div>
                         </div>
-
+                        {% if sale.order_status == "Completed Request" or sale.order_status == "Completed" %}
+                        {% else %}
                         <div class="modal-footer" id="modal-btn-{{sale.order_id}}">
                             <button type="submit" class="btn btn-primary">Send cameo</button>
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
                         </div>
+                        {% endif %}
                         </form>
                         {% else %}
                         <div class="cameo-video-container">
@@ -183,7 +199,7 @@
             document.getElementById("loader-" + order_id).style.display = "none"
             setTimeout(() => {
                 location.reload()
-            }, 3000)
+            }, 1500)
         } catch (error) {
             document.getElementById("status-" + order_id).innerHTML = `${error.response.data.error}`
             document.getElementById("loader-" + order_id).style.display = "none"

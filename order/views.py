@@ -23,7 +23,7 @@ def send_cameo(request, order_id):
                 booking = Booking.objects.filter(order_id=order_id).first()
                 new_order = File(order=booking, cameo_file=cameo_file)
                 new_order.save()
-                booking.order_status = "completed"
+                booking.order_status = "Completed Request"
                 booking.save()
                 return Response({"status": True}, status=status.HTTP_200_OK)
             else:
@@ -48,6 +48,23 @@ def accept(request, order_id):
         booking = Booking.objects.filter(order_id=order_id).first()
         if booking.requested_user_id == request.user.id:
             booking.is_accepted = True
+            booking.order_status = "Completed"
+            booking.save()
+            return Response(booking.is_accepted, status=status.HTTP_200_OK)
+        else:
+            return Response("you're not authorized to do this action")
+    else:
+        return Response(
+            {"error": "Not authorized"}, status=status.HTTP_401_UNAUTHORIZED
+        )
+
+
+@api_view(["POST"])
+def decline(request):
+    if request.user.is_authenticated:
+        booking = Booking.objects.filter(order_id=request.POST.get("order_id")).first()
+        if booking.requested_user_id == request.user.id:
+            booking.decline_reason = request.POST.get("reason")
             booking.save()
             return Response(booking.is_accepted, status=status.HTTP_200_OK)
         else:

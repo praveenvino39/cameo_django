@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from booking.models import Booking
+from order.models import File
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.

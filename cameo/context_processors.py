@@ -7,7 +7,7 @@ def newsale_processor(request):
         bookings = Booking.objects.filter(cameo=request.user)
         new_sale = []
         for booking in bookings:
-            if booking.order_status != "completed":
+            if booking.order_status != "Completed":
                 new_sale.append(booking)
         return {"new_sale": len(new_sale)}
     else:
@@ -19,7 +19,7 @@ def purchase_update(request):
         purchase = []
         bookings = Booking.objects.filter(requested_user_id=request.user.id)
         for booking in bookings:
-            if booking.order_status == "completed":
+            if booking.order_status == "Completed Request" and not booking.is_accepted:
                 purchase.append(booking)
         return {"purchase_update": len(purchase)}
     else:
