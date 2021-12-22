@@ -8,3 +8,4 @@ pyopenssl==20.0.1
 service-identity==21.1.0
 websockets==9.1
 gunicorn
+jsonfield
