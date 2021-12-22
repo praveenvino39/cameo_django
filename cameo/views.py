@@ -81,4 +81,4 @@ def login_api(request):
         else:
             return send_response(isSuccess=False,code=status.HTTP_400_BAD_REQUEST, message="Username or password invalid")
     else:
-        return send_response(isSuccess=False,code=status.response.Http404, message="Username or password invalid")
+        return send_response(isSuccess=False,code=status.HTTP_404_NOT_FOUND, message="Username or password invalid")
