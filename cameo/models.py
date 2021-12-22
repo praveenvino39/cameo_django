@@ -1,7 +1,8 @@
 from locale import currency
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 from jsonfield import JSONField
+from rest_framework.serializers import ModelSerializer
 
 # Create your models here.
 
@@ -74,3 +75,9 @@ class Cameo(AbstractUser):
     is_featured = models.BooleanField(null=True, blank=True, default=False)
     reviews = JSONField(default=[])
     fans = JSONField(default=[])
+
+
+class CameoSerializer(ModelSerializer):
+    class Meta:
+        model = Cameo
+        exclude = []

@@ -1,0 +1,10 @@
+autopep8==1.5.7
+channels==3.0.4
+django-cors-headers==3.8.0
+djangorestframework==3.12.4
+pillow==8.3.2
+pip-chill==1.0.1
+pyopenssl==20.0.1
+service-identity==21.1.0
+websockets==9.1
+gunicorn

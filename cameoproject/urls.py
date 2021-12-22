@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = (
     [
         path("", include("cameo.urls")),
+        path("api/", include("cameo.api_urls")),
         path("book/", include("booking.urls")),
         path("payment/", include("payment.urls")),
         path("profile/", include("userprofile.urls")),

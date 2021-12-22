@@ -1,12 +1,16 @@
-from django.http import request
+from django.http import request, response
 import json
 import cameo
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
-from .models import Cameo
+from .models import Cameo, CameoSerializer
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from cameoproject.response_helper import send_response
+from rest_framework import status
 
 # Create your views here.
 
@@ -62,3 +66,22 @@ def show_cameo(request, username):
     cameo = get_object_or_404(Cameo, username=username)
     context = {"cameo": cameo, "review_count": len(cameo.reviews)}
     return render(request, "cameo/show_cameo.html", context=context)
+
+
+@api_view(['POST'])
+def login_api(request):
+    user = Cameo.objects.filter(username=request.POST.get("username")).first()
+    if user:
+        if user.check_password(request.POST.get("password")):
+            login(request=request, user=user)
+            token, created = Token.objects.get_or_create(user=user)
+            messages.success(request, token.key, extra_tags="authentication")
+            user = CameoSerializer(user)
+            return send_response(data={"token": str(token), "user": user.data},isSuccess=True,code=status.HTTP_200_OK)
+        else:
+            return send_response(isSuccess=False,code=status.HTTP_400_BAD_REQUEST, message="Username or password invalid")
+    else:
+        messages.error(
+            request, "Username or Password invalid.", extra_tags="danger"
+        )
+        return redirect("login_page")
