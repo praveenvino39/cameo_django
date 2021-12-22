@@ -84,4 +84,4 @@ def login_api(request):
         messages.error(
             request, "Username or Password invalid.", extra_tags="danger"
         )
-        return redirect("login_page")
+        return send_response(isSuccess=False,code=status.response.Http404, message="0")

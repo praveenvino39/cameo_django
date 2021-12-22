@@ -1,1 +1,1 @@
-web: gunicorn cameoproject.wsgi --preload --workers 1
+web: gunicorn cameoproject7.wsgi --preload --workers 1
