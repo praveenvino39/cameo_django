@@ -7,3 +7,4 @@ pillow==8.4.0
 pyopenssl==21.0.0
 stripe==2.63.0
 virtualenv==20.8.1
+gunicorn
