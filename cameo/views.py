@@ -1,3 +1,5 @@
+from json.decoder import JSONDecoder
+from django.contrib.auth.models import User
 from django.http import request, response
 import json
 import cameo
@@ -68,17 +70,18 @@ def show_cameo(request, username):
     return render(request, "cameo/show_cameo.html", context=context)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 def login_api(request):
-    user = Cameo.objects.filter(username=request.POST.get("username")).first()
-    if user:
-        if user.check_password(request.POST.get("password")):
-            login(request=request, user=user)
-            token, created = Token.objects.get_or_create(user=user)
-            messages.success(request, token.key, extra_tags="authentication")
-            user = CameoSerializer(user)
-            return send_response(data={"token": str(token), "user": user.data},isSuccess=True,code=status.HTTP_200_OK)
+    if request.method == "POST":
+        user = get_object_or_404(Cameo, username = request.data.get("username"))
+        if user is not None:
+            if user.check_password(request.data.get("password")):
+                login(request=request, user=user)
+                token, created = Token.objects.get_or_create(user=user)
+                messages.success(request, token.key, extra_tags="authentication")
+                user = CameoSerializer(user)
+                return send_response(data={"token": str(token), "user": user.data},isSuccess=True,code=status.HTTP_200_OK)
+            else:
+                return send_response(isSuccess=False,code=status.HTTP_400_BAD_REQUEST, message="Username or password invalid")
         else:
-            return send_response(isSuccess=False,code=status.HTTP_400_BAD_REQUEST, message="Username or password invalid")
-    else:
-        return send_response(isSuccess=False,code=status.HTTP_404_NOT_FOUND, message="Username or password invalid")
+            return send_response(isSuccess=False,code=status.HTTP_404_NOT_FOUND, message="Username or password invalid")
