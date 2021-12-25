@@ -94,7 +94,7 @@ def login_api(request):
 @api_view(["GET"])
 def homepage_api(request):
     most_reviewed = []
-    results = Cameo.objects.all()
+    results = Cameo.objects.all().filter(is_celebrity = True)
     for cameo in results:
         if len(most_reviewed) == 0:
             if len(cameo.reviews) >= 6 and cameo.username != request.user.username:
@@ -103,8 +103,8 @@ def homepage_api(request):
             if len(cameo.reviews) >= len(most_reviewed[0].reviews) and cameo.username != request.user.username:
                 most_reviewed.insert(0,cameo)
     most_reviewed = CameoSerializer(most_reviewed, many=True)
-    trending_cameo = Cameo.objects.all().order_by('-fans')
+    trending_cameo = Cameo.objects.all().filter(is_celebrity = True).order_by('-fans')
     trending_cameo = CameoSerializer(trending_cameo, many=True)
-    new_cameo = Cameo.objects.all().order_by("-date_joined")
+    new_cameo = Cameo.objects.all().filter(is_celebrity = True).order_by("-date_joined")
     new_cameo = CameoSerializer(new_cameo, many=True)
     return send_response(code=status.HTTP_200_OK, isSuccess=True, data={"category": Cameo.category_choice, "most_reviewed":  most_reviewed.data[:10], "trending":trending_cameo.data[:10], "new": new_cameo.data})
