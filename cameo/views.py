@@ -2,12 +2,15 @@ from json.decoder import JSONDecoder
 from django.contrib.auth.models import User
 from django.http import request, response
 import json
+
+from django.utils import translation
 import cameo
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
 from .models import Cameo, CameoSerializer
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models.expressions import RawSQL
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -85,3 +88,23 @@ def login_api(request):
                 return send_response(isSuccess=False,code=status.HTTP_400_BAD_REQUEST, message="Username or password invalid")
         else:
             return send_response(isSuccess=False,code=status.HTTP_404_NOT_FOUND, message="Username or password invalid")
+
+
+
+@api_view(["GET"])
+def homepage_api(request):
+    most_reviewed = []
+    results = Cameo.objects.all()
+    for cameo in results:
+        if len(most_reviewed) == 0:
+            if len(cameo.reviews) >= 6 and cameo.username != request.user.username:
+                most_reviewed.append(cameo)
+        else:
+            if len(cameo.reviews) >= len(most_reviewed[0].reviews) and cameo.username != request.user.username:
+                most_reviewed.insert(0,cameo)
+    most_reviewed = CameoSerializer(most_reviewed, many=True)
+    trending_cameo = Cameo.objects.all().order_by('-fans')
+    trending_cameo = CameoSerializer(trending_cameo, many=True)
+    new_cameo = Cameo.objects.all().order_by("-date_joined")
+    new_cameo = CameoSerializer(new_cameo, many=True)
+    return send_response(code=status.HTTP_200_OK, isSuccess=True, data={"category": Cameo.category_choice, "most_reviewed":  most_reviewed.data[:10], "trending":trending_cameo.data[:10], "new": new_cameo.data})

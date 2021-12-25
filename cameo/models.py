@@ -74,7 +74,7 @@ class Cameo(AbstractUser):
     paypal_email = models.EmailField(null=True)
     is_featured = models.BooleanField(null=True, blank=True, default=False)
     reviews = JSONField(default=[])
-    fans = JSONField(default=[])
+    fans = models.IntegerField(default=0)
 
 
 class CameoSerializer(ModelSerializer):

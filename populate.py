@@ -39,7 +39,8 @@ for i in range(1, 10):
     newcameo.bio = "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex totam nulla, qui accusantium quibusdam alias natus aliquam doloremque voluptas autem!"
     newcameo.price = random.randint(1, 999)
     newcameo.currency_code = random.choice(Cameo.currency_code_symbols)[0]
-    for i in range(1,7):
+    newcameo.fans = random.randint(1, 999)
+    for i in range(1,random.randint(1, 100)):
         newcameo.reviews.append(    {
             "user": "Someone",
             "review": "Very nice and humble",
