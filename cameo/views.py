@@ -73,7 +73,7 @@ def show_cameo(request, username):
 @api_view(["POST"])
 def login_api(request):
     if request.method == "POST":
-        user = get_object_or_404(Cameo, username = request.data.get("username"))
+        user = Cameo.objects.filter(username = request.data.get("username")).first()
         if user is not None:
             if user.check_password(request.data.get("password")):
                 login(request=request, user=user)
