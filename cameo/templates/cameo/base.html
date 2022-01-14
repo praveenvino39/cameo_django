@@ -40,6 +40,8 @@
 
         body {
             font-family: poppins, sans-serif !important;
+            padding-left: 106px;
+            padding-right: 106px;
         }
 
         .btn:active {
@@ -60,12 +62,90 @@
         a {
             text-decoration: none;
         }
+
+        .loading-bar {
+            width: 100%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            height: 10px;
+            background-color: rgb(255, 3, 124);
+        }
+
+        .linear-activity {
+            bottom: -20px;
+            position: absolute;
+            left: 0px;
+            overflow: hidden;
+            width: 100%;
+            height: 6px;
+            background-color: rgb(255, 95, 172);
+            margin: 20px auto;
+        }
+
+        .determinate {
+            position: relative;
+            max-width: 100%;
+            height: 100%;
+            -webkit-transition: width 500ms ease-out 1s;
+            -moz-transition: width 500ms ease-out 1s;
+            -o-transition: width 500ms ease-out 1s;
+            transition: width 500ms ease-out 1s;
+            background-color: rgb(255, 3, 124);
+        }
+
+        .indeterminate {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .indeterminate:before {
+            content: '';
+            position: absolute;
+            height: 100%;
+            background-color: rgb(255, 3, 124);
+            animation: indeterminate_first 1.5s infinite ease-out;
+        }
+
+        .indeterminate:after {
+            content: '';
+            position: absolute;
+            height: 100%;
+            background-color: rgb(255, 3, 124);
+            animation: indeterminate_second 1.5s infinite ease-in;
+        }
+
+        @keyframes indeterminate_first {
+            0% {
+                left: -100%;
+                width: 100%;
+            }
+
+            100% {
+                left: 100%;
+                width: 10%;
+            }
+        }
+
+        @keyframes indeterminate_second {
+            0% {
+                left: -150%;
+                width: 100%;
+            }
+
+            100% {
+                left: 100%;
+                width: 10%;
+            }
+        }
     </style>
 </head>
 
 <body>
     {% if messages %}
-    <div style="margin: 10px;">
+    <div style="margin: 10px ;">
         <div class="messages">
             {% for message in messages %}
             {% if not message.tags == 'authentication success' %}
@@ -78,10 +158,12 @@
         </div>
     </div>
 
+
     {% endif %}
     {% include 'cameo/navbar.html' %}
     {% block body %}
     {% endblock %}
+
 
 </body>
 

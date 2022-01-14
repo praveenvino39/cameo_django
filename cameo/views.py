@@ -33,7 +33,14 @@ def homepage(request):
 def login_view(request):
     print(request.GET.get("next"))
     context = {"next": request.GET.get("next")}
-    return render(request, "cameo/login_page.html", context=context)
+    return render(request, "cameo/login.html", context=context)
+
+
+def filter_by_category(request, category):
+    result = Cameo.objects.all().filter(category = category.title())
+    print(Cameo.objects.all().first().category)
+    context = {"cameos": result, "category":category, "selected_category": category}
+    return render(request, "cameo/category.html", context)
 
 
 def login_user(request):
@@ -108,3 +115,31 @@ def homepage_api(request):
     new_cameo = Cameo.objects.filter(is_celebrity = True).order_by("-date_joined")
     new_cameo = CameoSerializer(new_cameo, many=True)
     return send_response(code=status.HTTP_200_OK, isSuccess=True, data={"category": Cameo.category_choice, "most_reviewed":  most_reviewed.data[:10], "trending":trending_cameo.data[:10], "new": new_cameo.data})
+
+
+
+@api_view(['GET'])
+def filter_by_category_api(request, category):
+    filter_type = request.GET.get("filter")
+    hi = request.GET.get("hi")
+    low = request.GET.get("low")
+    result = Cameo.objects.all().filter(category = category.title())
+    if filter_type == "RECOMMENDED":
+        result = result.order_by("-rating")[:20]
+    if filter_type == "HILO":
+        result = result.order_by("-price")
+    if filter_type == "LOHI":
+        result = result.order_by("price")
+    if filter_type == "NEW":
+        result = result.order_by("-date_joined")
+    if filter_type == "NAME":
+        result = result.order_by("first_name")
+    if filter_type == "SUPERFAST":
+        result = result.filter(delivery_duration_unit = "Hr")
+    if hi is not None and low is not None:
+        result = result.filter(price__gte = low, price__lte = hi)
+    else:
+        if hi is not None:
+            result = result.filter(price__gte = hi)
+    result = CameoSerializer(result, many=True)
+    return send_response(code=status.HTTP_200_OK,isSuccess= True, data={"filter": filter_type,"cameos": result.data})

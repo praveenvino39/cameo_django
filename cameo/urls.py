@@ -4,6 +4,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 
 urlpatterns = [
     path('', view=views.homepage, name='homepage'),
+    path('category/<str:category>', view=views.filter_by_category, name='category'),
     path('cameo/<str:username>', view=views.show_cameo, name='show_cameo'),
     path('login/user', view=views.login_view, name="login_page"),
     path('login', view=views.login_user, name='login'),

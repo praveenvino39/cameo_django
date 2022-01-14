@@ -193,7 +193,9 @@
 {% endif %}
 <div class="categories">
     {% for category in categories %}
-    <p class="category">{{category.0}}</p>
+    <a href="{% url 'category' category.0  %}">
+        <p class="category">{{category.0}}</p>
+    </a>
     {% endfor %}
 </div>
 <div class="teaser">

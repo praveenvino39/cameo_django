@@ -16,8 +16,9 @@ fake = Faker()
 user_response = requests.get('https://randomuser.me/api/?results=50')
 user_response = user_response.json()
 print(type(user_response))
+rating = [1.5,1.7,3.5,5.0,4.6,1.3]
 
-for i in range(1, 10):
+for i in range(1, 50):
     full_name = fake.name()
     newcameo = Cameo.objects.create(username=full_name.replace(" ", "_"),
                                     password=make_password("Pv4you39"))
@@ -28,7 +29,8 @@ for i in range(1, 10):
         Cameo.delivery_duration_unit_choice)[0]
     newcameo.paypal_email = fake.email()
     newcameo.is_celebrity = True
-    newcameo.category = random.choice(Cameo.category_choice)[0]
+    newcameo.rating = round(random.uniform(0.0, 5.0),1)
+    newcameo.category = Cameo.category_choice[2][0]
     file_name = random.randint(1, 999)
     image = urllib.request.urlretrieve(
         user_response["results"][i]["picture"]["large"],

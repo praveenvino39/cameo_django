@@ -1,8 +1,11 @@
 from locale import currency
+from operator import mod
 from django.db import models
 from django.contrib.auth.models import AbstractUser, User
 from jsonfield import JSONField
 from rest_framework.serializers import ModelSerializer
+from django.core.validators import MinValueValidator, MaxValueValidator
+
 
 # Create your models here.
 
@@ -74,6 +77,7 @@ class Cameo(AbstractUser):
     paypal_email = models.EmailField(null=True)
     is_featured = models.BooleanField(null=True, blank=True, default=False)
     reviews = JSONField(default=[])
+    rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)], blank=True, null=True)
     fans = models.IntegerField(default=0)
 
 
@@ -81,3 +85,9 @@ class CameoSerializer(ModelSerializer):
     class Meta:
         model = Cameo
         exclude = []
+
+
+class Review(models.Model):
+    cameo = models.ForeignKey(Cameo, related_name="user_review", on_delete=models.CASCADE)
+    user = models.CharField(max_length=256)
+    review = models.CharField(max_length=1000)

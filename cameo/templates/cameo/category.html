@@ -1,0 +1,726 @@
+{% extends 'cameo/base.html' %}
+
+
+{% block body %}
+<style>
+    .messages {
+        width: 100%;
+        display: flex;
+
+        justify-content: center;
+        text-align: center;
+    }
+
+    .banner-video {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        border-radius: 2px !important;
+        background: #101010;
+    }
+
+    .teaser {
+        margin-top: 1.5rem;
+        width: 100%;
+        padding: 10px 50px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .teaser-video {
+        width: 100%;
+        border-radius: 10px;
+
+    }
+
+    .teaser-text {
+        width: 60%;
+        color: white;
+        position: absolute;
+        text-align: center;
+        margin: 0 auto;
+        font-size: 2.5rem;
+        font-weight: bold;
+    }
+
+    .categories {
+        display: flex;
+        margin-top: 10px;
+        padding: 0px 20px;
+        overflow-x: auto;
+    }
+
+    .category {
+        -webkit-user-select: none;
+        /* Safari */
+        -moz-user-select: none;
+        /* Firefox */
+        -ms-user-select: none;
+        /* IE10+/Edge */
+        padding: 10px 10px 10px 20px;
+        margin: 0px 5px 0px 10px;
+        font-size: 1rem;
+        font-weight: 400;
+        letter-spacing: -0.01rem;
+        max-height: 40px;
+        -webkit-box-align: center;
+        align-items: center;
+        background-color: rgb(37, 37, 37);
+        border-radius: 8rem;
+        border: 0px;
+        color: rgb(243, 244, 254);
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        padding: 1rem 1.5rem;
+        text-align: center;
+        text-decoration: none;
+        transition: background-color 216ms ease-in-out 0s;
+        white-space: nowrap;
+        pointer-events: inherit;
+        background-color: rgb(37, 37, 37);
+        -ms-overflow-style: none;
+        /* Internet Explorer 10+ */
+        scrollbar-width: none;
+        /* Firefox */
+    }
+
+    .categories::-webkit-scrollbar {
+        display: none;
+        /* Safari and Chrome */
+    }
+
+    .category:hover {
+        cursor: pointer;
+        background-color: rgb(65, 65, 65);
+        transition: all .3s;
+    }
+
+    .section {
+        margin-top: 10px;
+        padding: 0px 20px;
+    }
+
+
+    .section-title {
+        font-size: 1.8rem;
+        font-weight: bold;
+    }
+
+    .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .btn-slider-control {
+        border-radius: 100px;
+        border: 0px;
+        background-color: rgb(37, 37, 37);
+        color: white;
+        width: 30px;
+        height: 30px;
+        max-width: 30px;
+        max-height: 30px;
+        font-size: .7rem;
+        padding: 3px 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .controls {
+        display: flex;
+        width: 50%;
+        align-items: center;
+        justify-content: end;
+    }
+
+    .section-body {
+        margin-top: 7px;
+        display: grid;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        transition: all 500ms;
+        -ms-overflow-style: none;
+        grid-template-columns: 1fr 5fr;
+        /* Internet Explorer 10+ */
+        scrollbar-width: none;
+    }
+
+    .cameo-container {
+        display: flex;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .section-body::-webkit-scrollbar {
+        display: none;
+    }
+
+    @media screen and (max-width: 1580px) {
+        body {
+            padding: 0px;
+        }
+
+        .section-body {
+            grid-template-columns: 1fr 3fr;
+        }
+    }
+
+    @media screen and (max-width: 970px) {
+        body {
+            padding: 0px;
+        }
+
+        .section-body {
+            grid-template-columns: 1fr 2fr;
+        }
+    }
+
+    #filterModelBtn {
+        display: none;
+    }
+
+    @media screen and (max-width: 750px) {
+        body {
+            padding: 0px;
+        }
+
+        .section-body {
+            grid-template-columns: 1fr;
+        }
+
+        .section-filter {
+            display: none;
+        }
+
+        #hideFilter {
+            display: none;
+        }
+
+        #showFilter {
+            display: none;
+        }
+
+        #filterModelBtn {
+            display: block;
+        }
+    }
+
+    @media screen and (max-width: 450px) {
+        .cameo-link {
+            transform: scale(0.8);
+        }
+
+        .cameo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .section {
+            padding: 0px;
+        }
+
+        .section-bread-cumber {
+            padding: 5px 10px;
+        }
+
+        .section-header {
+            padding: 5px 10px;
+        }
+
+        .controls {
+            width: 60%;
+        }
+    }
+
+    @media screen and (max-width: 400px) {
+        .cameo-link {
+            transform: scale(1);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+        }
+
+        .cameo-container {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .cameo-image {
+            object-fit: cover;
+            height: 300px !important;
+            width: 100% !important;
+        }
+
+        .section {
+            padding: 0px;
+        }
+
+        .section-bread-cumber {
+            padding: 5px 10px;
+        }
+
+        .section-header {
+            padding: 5px 10px;
+        }
+
+        .controls {
+            width: 70%;
+        }
+
+        .cameo {
+            padding: 0px 10px;
+        }
+    }
+
+    .section-bread-cumber {
+        font-size: 14px;
+        color: rgb(197, 197, 197);
+        font-weight: 300;
+        margin-top: 20px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .btn-request {
+        background-color: rgb(255, 3, 124);
+        color: white;
+        font-size: 1rem;
+        max-width: 130px;
+        padding: 4px 7px;
+        border-radius: 5px;
+        width: 100%;
+        border: 0px;
+    }
+
+    .btn-outline {
+        background-color: transparent;
+        color: white;
+        font-size: 1rem;
+        margin-right: 10px;
+        padding: 4px 4px;
+        border-radius: 20px;
+        max-width: 130px;
+        width: 100%;
+        border: 1px solid white;
+    }
+
+    .divider-title {
+        font-size: 1.1rem;
+        font-weight: 500;
+        letter-spacing: -0.015rem;
+        line-height: 2.3rem;
+        color: gray;
+        margin-top: 20px;
+        margin-bottom: .6rem;
+    }
+
+    .filter-container-inner {
+        display: flex;
+        align-items: center;
+        border-radius: 5px;
+    }
+
+    .section-filter {
+        padding-right: 60px;
+        transition: all 500ms;
+    }
+
+    .checkbox-filter {
+        width: 1.3em;
+        margin-right: 10px;
+        height: 1.3em;
+        background-color: transparent;
+        border-radius: 50%;
+        vertical-align: middle;
+        border: 1px solid #ddd;
+        appearance: none;
+        -webkit-appearance: none;
+        outline: none;
+        cursor: pointer;
+    }
+    .filter-container-inner:hover{
+        padding-left: 10px;
+        background-color: #252525;
+        cursor: pointer;
+        transition: all 600ms;
+    }
+
+    .filter-container-inner:hover .checkbox-filter{
+        background-color: #45FFFF;
+        cursor: pointer;
+        transition: all 600ms;
+    }
+
+    
+
+    .checkbox-filter:checked {
+        background-color: #45FFFF;
+    }
+
+    .checkbox-text {
+        font-size: 1rem;
+        padding: 0px;
+        margin: 0px;
+        padding: 10px 5px;
+    }
+</style>
+
+{% if messages %}
+<div style="margin: 10px;">
+    <div class="messages">
+        {% for message in messages %}
+        {% if not message.tags == 'authentication success' %}
+        <div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+            <p style="margin: 0px;">{{message}}</p>
+            <button type="button" class="btn-close btn-sm btn-alert" data-bs-dismiss="alert"
+                aria-label="Close"></button>
+        </div>
+        {% else %}
+        <script>
+            localStorage.setItem('auth_token', "{{message}}")
+        </script>
+        {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endif %}
+<div class="section" ref="root" style="display: none;" id="section">
+    <p style="margin: 0px;" class="section-bread-cumber"><a href="/" class="cameo-link">Home</a>
+        /<a href="{% url 'category' category %}" class="cameo-link">{{category}}</a>
+    </p>
+    <div class="section-header">
+        <p style="margin: 0px;" class="section-title">{{category | title}}</p>
+        <div class="controls">
+            <button v-on:click="hideFilter" id="hideFilter" class="btn-outline">Hide Filters</button>
+            <button v-on:click="showFilter" id="showFilter" style="display: none;" class="btn-outline">Show
+                Filters</button>
+            <button class="btn-outline" id="filterModelBtn" data-toggle="modal"
+                data-target="#filterModal">Filter</button>
+            <button class="btn-request">Clear Filters</button>
+        </div>
+    </div>
+    {% include 'cameo/loading.html' %}
+    <div class="section-body" id="section-body">
+
+        <div class="section-filter" id="section-filter">
+            <p class="divider-title">Sort by</p>
+            <div class="filter-container-inner" v-on:click="getCameo('filter=RECOMMENDED')">
+                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                <p class="checkbox-text">Recomended</p>
+            </div>
+            <div class="filter-container-inner" v-on:click="getCameo('filter=HILO')">
+                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                <p class="checkbox-text">Price: High - Low</p>
+            </div>
+            <div class="filter-container-inner" v-on:click="getCameo('filter=LOHI')">
+                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                <p class="checkbox-text">Price: Low - High</p>
+            </div>
+            <div class="filter-container-inner" v-on:click="getCameo('filter=NEW')">
+                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                <p class="checkbox-text">Newest</p>
+            </div>
+            <div class="filter-container-inner" v-on:click="getCameo('filter=NAME')">
+                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                <p class="checkbox-text">Alphabetical</p>
+            </div>
+            <div style="height: 2px;width: 100%;background-color: #252525;"></div>
+            <p class="divider-title">Super-fast Delivery</p>
+            <div class="filter-container-inner" v-on:click="getCameo('filter=SUPERFAST')">
+                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                <div>
+                    <span class="constants__OptionLabel-qlmjfl-0 bAziGA"><img style="margin-right: 5px;"
+                            aria-hidden="true" alt="zap" src="https://cdn.cameo.com/static/assets/icons/zap.svg">24hr
+                        delivery</span>
+                </div>
+            </div>
+            <div style="height: 2px;width: 100%;background-color: #252525; margin-top: 1rem;"></div>
+
+            <p class="divider-title">Price</p>
+            <div class="filter-container-inner" v-on:click="getCameo('low=0&hi=100')">
+                <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+                <p class="checkbox-text">$0 - $100</p>
+            </div>
+            <div class="filter-container-inner" v-on:click="getCameo('low=100&hi=200')">
+                <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+                <p class="checkbox-text">$100 - $200</p>
+            </div>
+            <div class="filter-container-inner" v-on:click="getCameo('low=200&hi=300')">
+                <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+                <p class="checkbox-text">$200 - $300</p>
+            </div>
+            <div class="filter-container-inner" v-on:click="getCameo('low=300&hi=400')">
+                <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+                <p class="checkbox-text">$300 - $400</p>
+            </div>
+            <div class="filter-container-inner" v-on:click="getCameo('hi=500')">
+                <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+                <p class="checkbox-text">$500+</p>
+            </div>
+            <div style="height: 2px;width: 100%;background-color: #252525;"></div>
+
+        </div>
+        <div class="cameo-container" id="cameo-container">
+
+            <div v-for="item in cameo">
+                <a class="cameo-link">
+                    <div class="cameo">
+                        <img class="cameo-image" :src=[[item.image]] alt="">
+                        <div class="cameo-overlay"></div>
+                        <span class="cameo-price">
+                            <div  v-if="item.delivery_duration_unit == 'Hr'" data-testid="24hr-delivery" class=""><img
+                                    style="margin-right: 3px;width: 15px !important;height: 15px !important; object-fit: contain;"
+                                    src="https://cdn.cameo.com/static/assets/icons/zap.svg" class=""></div>
+                            <strong><span>[[item.price]]</span></strong>
+                        </span>
+                        <p class="cameo-name" style="margin: 0px;">[[item.first_name]] [[item.last_name]]</p>
+                        <p class="cameo-intro" style="margin: 0px;">[[item.intro]] </p>
+                    </div>
+                </a>
+            </div>
+            <!-- {% for cameo in cameos %} -->
+            <!-- <a class="cameo-link" href="{% url 'show_cameo' cameo.username  %}">
+                <div class="cameo">
+                    <img class="cameo-image" src="{{cameo.image.url}}" alt="">
+                    <div class="cameo-overlay"></div>
+                    <span class="cameo-price">{% if cameo.delivery_duration_unit == "Hr" %}<div data-testid="24hr-delivery"
+                            class=""><img
+                                style="margin-right: 3px;width: 15px !important;height: 15px !important; object-fit: contain;"
+                                src="https://cdn.cameo.com/static/assets/icons/zap.svg" class=""></div>{% endif %}
+                        <strong><span>${{cameo.price|floatformat}}</span></strong></span>
+                    <p class="cameo-name" style="margin: 0px;">{{cameo.first_name|add:" "|add:cameo.last_name}}</p>
+                    <p class="cameo-intro" style="margin: 0px;">{{cameo.intro}}</p>
+                </div>
+            </a> -->
+            <!-- {% endfor %} -->
+        </div>
+
+    </div>
+</div>
+
+
+<!-- Filter model -->
+<div class="modal fade bd-example-modal-lg" id="filterModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Filter</h5>
+                <img src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-close-512.png" class="close"
+                    style="background-color: rgb(255, 3, 124);border: 0px;border-radius: 50px; width: 20px;height: 20px;padding: 3px;"
+                    data-dismiss="modal" aria-label="Close">
+
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="section-filter-model" id="section-filter-model">
+                    <p class="divider-title">Sort by</p>
+                    <div class="filter-container-inner">
+                        <input v-model="filterType" type="checkbox" value="RECOMMENDED" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">Recomended</p>
+                    </div>
+                    <div class="filter-container-inner">
+                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">Price: High - Low</p>
+                    </div>
+                    <div class="filter-container-inner">
+                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">Price: Low - High</p>
+                    </div>
+                    <div class="filter-container-inner">
+                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">Number of reviews</p>
+                    </div>
+                    <div class="filter-container-inner">
+                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">Newest</p>
+                    </div>
+                    <div class="filter-container-inner">
+                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">Alphabetical</p>
+                    </div>
+                    <div style="height: 2px;width: 100%;background-color: #252525;"></div>
+                    <p class="divider-title">Super-fast Delivery</p>
+                    <div class="filter-container-inner">
+                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                        <div>
+                            <span class="constants__OptionLabel-qlmjfl-0 bAziGA"><img style="margin-right: 5px;"
+                                    aria-hidden="true" alt="zap"
+                                    src="https://cdn.cameo.com/static/assets/icons/zap.svg">24hr delivery</span>
+                        </div>
+                    </div>
+                    <div style="height: 2px;width: 100%;background-color: #252525; margin-top: 1rem;"></div>
+
+                    <p class="divider-title">Price</p>
+                    <div class="filter-container-inner">
+                        <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">$0 - $100</p>
+                    </div>
+                    <div class="filter-container-inner">
+                        <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">$100 - $200</p>
+                    </div>
+                    <div class="filter-container-inner">
+                        <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">$200 - $300</p>
+                    </div>
+                    <div class="filter-container-inner">
+                        <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">$300 - $400</p>
+                    </div>
+                    <div class="filter-container-inner">
+                        <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+                        <p class="checkbox-text">$500+</p>
+                    </div>
+                    <div style="height: 2px;width: 100%;background-color: #252525;"></div>
+                    <div style="display: flex;width: 100%;justify-content: center;margin-top: 20PX;">
+                        <button class="btn-request" style="margin: 0px auto;">Apply</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script defer>
+    var homepageVue = new Vue({
+        el: '#section',
+        delimiters: ['[[', ']]'],
+        created: async function () {
+            this.showLoading()
+            document.getElementById("section").style.display = "block"
+            console.log('a is: ' + this.a)
+            this.getAllCameo()
+
+        },
+        data: {
+            cameo: [],
+            selectedCategory: "{{selected_category}}",
+            filterType: []
+        },
+        methods: {
+            getCameo: async function (filter) {
+                this.filterType.push(filter.split("=")[1])
+                console.log(this.filterType);
+                this.showLoading()
+                var response = await axios.get(`http://127.0.0.1:8000/api/category/${this.selectedCategory}?format=json&${filter}`)
+                this.cameo = response.data.response.cameos
+                this.filter = response.data.response.filter
+                console.log(response)
+                this.hideLoading()
+            },
+            getAllCameo:async function(){
+                this.showLoading()
+                var response = await axios.get(`http://127.0.0.1:8000/api/category/${this.selectedCategory}?format=json`)
+                this.cameo = response.data.response.cameos
+                this.filter = response.data.response.filter
+                console.log(response)
+                this.hideLoading()
+            },
+            showLoading: function () {
+                document.getElementById("loadingBar").style.display = "block"
+            },
+            hideLoading: function () {
+                document.getElementById("loadingBar").style.display = "none"
+            },
+            previous: function () {
+                var section = document.getElementById('section')
+                section.scrollLeft = 100
+                console.log(section.scrollLeft);
+            },
+            next: function () {
+                console.log("toggleMenu");
+            },
+            hideFilter: function () {
+                document.getElementById("section-filter").style.display = "none"
+                document.getElementById("section-body").style.gridTemplateColumns = "1fr"
+                document.getElementById("cameo-container").style.justifyContent = "center"
+                document.getElementById("showFilter").style.display = "block"
+                document.getElementById("hideFilter").style.display = "none"
+            },
+            showFilter: function () {
+                document.getElementById("section-filter").style.display = "block"
+                document.getElementById("section-body").style.gridTemplateColumns = "1fr 5pythofr"
+                document.getElementById("cameo-container").style.justifyContent = "start"
+                document.getElementById("showFilter").style.display = "none"
+                document.getElementById("hideFilter").style.display = "block"
+            }
+        }
+    })
+</script>
+<style>
+    .cameo-price {
+        display: flex;
+        position: absolute;
+        bottom: 60px;
+        right: 10px;
+    }
+
+    .cameo-link {
+        text-decoration: none;
+        color: white;
+    }
+
+    .cameo-link:hover {
+        text-decoration: none;
+        color: white;
+    }
+
+    .cameo-overlay {
+        width: 100%;
+        height: 50%;
+        position: absolute;
+        bottom: 56px;
+        border-radius: 0px 0px 10px 10px;
+        background-image: linear-gradient(transparent, rgb(0, 0, 0));
+    }
+
+    .cameo {
+        margin-top: 10px;
+        margin-right: 10px;
+        position: relative;
+    }
+
+    .cameo:first-child {
+        margin-left: 10px;
+    }
+
+    .cameo:hover {
+        transform: scale(1.04);
+        cursor: pointer;
+        transition: all .3s;
+    }
+
+    .cameo-image {
+        width: 12rem;
+        height: 13rem;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    .cameo-name {
+        font-size: 1.2rem;
+        font-weight: bolder;
+    }
+
+    .cameo-intro {
+        font-size: .9rem;
+        font-weight: 500;
+        letter-spacing: -0.01rem;
+        line-height: 1.8rem;
+        color: rgb(173, 174, 181);
+        display: block;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-top: 0.4rem;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
