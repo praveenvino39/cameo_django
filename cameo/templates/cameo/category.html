@@ -412,29 +412,29 @@
         <div class="section-filter" id="section-filter">
             <p class="divider-title">Sort by</p>
             <div class="filter-container-inner" v-on:click="setFilter('RECOMMENDED')">
-                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                <input type="radio" class="checkbox-filter" name="filter" id="recomended">
                 <p class="checkbox-text">Recomended</p>
             </div>
             <div class="filter-container-inner" v-on:click="setFilter('HILO')">
-                <input type="checkbox" class="checkbox-filter" name="hilo" id="hilo">
+                <input type="radio" class="checkbox-filter" name="filter" id="hilo">
                 <p class="checkbox-text">Price: High - Low</p>
             </div>
             <div class="filter-container-inner" v-on:click="setFilter('LOHI')">
-                <input type="checkbox" class="checkbox-filter" name="lohi" id="lohi">
+                <input type="radio" class="checkbox-filter" name="filter" id="lohi">
                 <p class="checkbox-text">Price: Low - High</p>
             </div>
             <div class="filter-container-inner" v-on:click="setFilter('NEW')">
-                <input type="checkbox" class="checkbox-filter" name="new" id="new">
+                <input type="radio" class="checkbox-filter" name="filter" id="new">
                 <p class="checkbox-text">Newest</p>
             </div>
             <div class="filter-container-inner" v-on:click="setFilter('NAME')">
-                <input type="checkbox" class="checkbox-filter" name="name" id="name">
+                <input type="radio" class="checkbox-filter" name="filter" id="name">
                 <p class="checkbox-text">Alphabetical</p>
             </div>
             <div style="height: 2px;width: 100%;background-color: #252525;"></div>
             <p class="divider-title">Super-fast Delivery</p>
             <div class="filter-container-inner" v-on:click="setFilter('SUPERFAST')">
-                <input type="checkbox" class="checkbox-filter" name="superfast" id="superfast">
+                <input type="radio" class="checkbox-filter" name="filter" id="superfast">
                 <div>
                     <p class="checkbox-text">
                         <span class="constants__OptionLabel-qlmjfl-0 bAziGA"><img style="margin-right: 5px;"
@@ -448,23 +448,23 @@
 
             <p class="divider-title">Price</p>
             <div class="filter-container-inner" v-on:click="setRange(0,100)">
-                <input type="radio" class="checkbox-filter" name="one" id="one">
+                <input type="radio" class="checkbox-filter" name="filter" id="one">
                 <p class="checkbox-text">$0 - $100</p>
             </div>
             <div class="filter-container-inner" v-on:click="setRange(100,200)">
-                <input type="radio" class="checkbox-filter" name="two" id="two">
+                <input type="radio" class="checkbox-filter" name="filter" id="two">
                 <p class="checkbox-text">$100 - $200</p>
             </div>
             <div class="filter-container-inner" v-on:click="setRange(200,300)">
-                <input type="radio" class="checkbox-filter" name="three" id="three">
+                <input type="radio" class="checkbox-filter" name="filter" id="three">
                 <p class="checkbox-text">$200 - $300</p>
             </div>
             <div class="filter-container-inner" v-on:click="setRange(300,400)">
-                <input type="radio" class="checkbox-filter" name="four" id="four">
+                <input type="radio" class="checkbox-filter" name="filter" id="four">
                 <p class="checkbox-text">$300 - $400</p>
             </div>
             <div class="filter-container-inner" v-on:click="setRange(0,500)">
-                <input type="radio" class="checkbox-filter" name="five" id="five">
+                <input type="radio" class="checkbox-filter" name="filter" id="five">
                 <p class="checkbox-text">$500+</p>
             </div>
             <div style="height: 2px;width: 100%;background-color: #252525;"></div>
@@ -527,29 +527,29 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="section-filter-model" id="section-filter-model">
                 <p class="divider-title">Sort by</p>
                 <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('RECOMMENDED')">
-                    <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                    <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
                     <p class="checkbox-text">Recomended</p>
                 </div>
                 <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('HILO')">
-                    <input type="checkbox" class="checkbox-filter" name="hilo" id="hilo">
+                    <input type="radio" class="checkbox-filter" name="hilo" id="hilo">
                     <p class="checkbox-text">Price: High - Low</p>
                 </div>
                 <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('LOHI')">
-                    <input type="checkbox" class="checkbox-filter" name="lohi" id="lohi">
+                    <input type="radio" class="checkbox-filter" name="lohi" id="lohi">
                     <p class="checkbox-text">Price: Low - High</p>
                 </div>
                 <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('NEW')">
-                    <input type="checkbox" class="checkbox-filter" name="new" id="new">
+                    <input type="radio" class="checkbox-filter" name="new" id="new">
                     <p class="checkbox-text">Newest</p>
                 </div>
                 <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('NAME')">
-                    <input type="checkbox" class="checkbox-filter" name="name" id="name">
+                    <input type="radio" class="checkbox-filter" name="name" id="name">
                     <p class="checkbox-text">Alphabetical</p>
                 </div>
                 <div style="height: 2px;width: 100%;background-color: #252525;"></div>
                 <p class="divider-title">Super-fast Delivery</p>
                 <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('SUPERFAST')">
-                    <input type="checkbox" class="checkbox-filter" name="superfast" id="superfast">
+                    <input type="radio" class="checkbox-filter" name="superfast" id="superfast">
                     <div>
                         <p class="checkbox-text">
                             <span class="constants__OptionLabel-qlmjfl-0 bAziGA"><img style="margin-right: 5px;"
@@ -640,7 +640,6 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
                 this.cameo = response.data.response.cameos
                 this.filter = response.data.response.filter
                 console.log(response)
-                this.clearUi()
                 this.hideLoading()
                 switch (this.filter) {
                     case "RECOMMENDED":
@@ -670,7 +669,6 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
                 var response = await axios.get(`${this.baseUrl}/api/category/${this.selectedCategory}?format=json&hi=${hi}&low=${low}`)
                 this.cameo = response.data.response.cameos
                 this.filter = response.data.response.filter
-                this.clearUi()
                 console.log(response)
                 this.hideLoading()
                 switch (this.filter) {
@@ -695,30 +693,12 @@ aria-labelledby="exampleModalLabel" aria-hidden="true">
                 var response = await axios.get(`${this.baseUrl}/api/category/${this.selectedCategory}?format=json&hi=${hi}`)
                 this.cameo = response.data.response.cameos
                 this.filter = response.data.response.filter
-                this.clearUi()
                 console.log(response)
                 this.hideLoading()
                 document.getElementById("five").checked = true
             },
             clearFilter: function () {
-                this.clearUi()
                 this.getCameo()
-            },
-            clearUi: function () {
-                document.getElementById("recomended").checked = false
-                document.getElementById("hilo").checked = false
-                document.getElementById("lohi").checked = false
-                document.getElementById("new").checked = false
-                document.getElementById("name").checked = false
-                document.getElementById("superfast").checked = false
-                document.getElementById("recomended").checked = false
-                document.getElementById("one").checked = false
-                document.getElementById("two").checked = false
-                document.getElementById("three").checked = false
-                document.getElementById("four").checked = false
-                document.getElementById("five").checked = false
-
-
             },
             getAllCameo: async function () {
                 this.showLoading()
