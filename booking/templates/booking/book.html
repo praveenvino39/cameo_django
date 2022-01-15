@@ -486,10 +486,10 @@
                     }
                     data.append("hideCameo", this.hideCameo)
                     try {
-                        var response = await axios.post('/book/create-booking/', data, {
+                        var response = await axios.post('/book/create-booking/?format=json', data, {
                             headers: {
                                 "Authorization": `Token ${localStorage.getItem('auth_token')}`,
-                                "Content-Type": "application/json"
+                                // "Content-Type": "application/json"
                             }
                         })
                         this.loading = false

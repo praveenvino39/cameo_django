@@ -137,9 +137,20 @@ def filter_by_category_api(request, category):
     if filter_type == "SUPERFAST":
         result = result.filter(delivery_duration_unit = "Hr")
     if hi is not None and low is not None:
+        if hi == "100":
+            filter_type = "ONE"
+        if hi == "200":
+            filter_type = "TWO"
+        if hi == "300":
+            filter_type = "THREE"
+        if hi == "400":
+            filter_type = "FOUR"
+        if hi == "500":
+            filter_type = "FIVE"
         result = result.filter(price__gte = low, price__lte = hi)
     else:
         if hi is not None:
+            filter_type = "FIVE"
             result = result.filter(price__gte = hi)
     result = CameoSerializer(result, many=True)
     return send_response(code=status.HTTP_200_OK,isSuccess= True, data={"filter": filter_type,"cameos": result.data})

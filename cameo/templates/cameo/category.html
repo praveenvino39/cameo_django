@@ -343,20 +343,21 @@
         outline: none;
         cursor: pointer;
     }
-    .filter-container-inner:hover{
+
+    .filter-container-inner:hover {
         padding-left: 10px;
         background-color: #252525;
         cursor: pointer;
         transition: all 600ms;
     }
 
-    .filter-container-inner:hover .checkbox-filter{
+    .filter-container-inner:hover .checkbox-filter {
         background-color: #45FFFF;
         cursor: pointer;
         transition: all 600ms;
     }
 
-    
+
 
     .checkbox-filter:checked {
         background-color: #45FFFF;
@@ -402,7 +403,7 @@
                 Filters</button>
             <button class="btn-outline" id="filterModelBtn" data-toggle="modal"
                 data-target="#filterModal">Filter</button>
-            <button class="btn-request">Clear Filters</button>
+            <button v-on:click="clearFilter()" class="btn-request">Clear Filters</button>
         </div>
     </div>
     {% include 'cameo/loading.html' %}
@@ -410,57 +411,60 @@
 
         <div class="section-filter" id="section-filter">
             <p class="divider-title">Sort by</p>
-            <div class="filter-container-inner" v-on:click="getCameo('filter=RECOMMENDED')">
+            <div class="filter-container-inner" v-on:click="setFilter('RECOMMENDED')">
                 <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
                 <p class="checkbox-text">Recomended</p>
             </div>
-            <div class="filter-container-inner" v-on:click="getCameo('filter=HILO')">
-                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+            <div class="filter-container-inner" v-on:click="setFilter('HILO')">
+                <input type="checkbox" class="checkbox-filter" name="hilo" id="hilo">
                 <p class="checkbox-text">Price: High - Low</p>
             </div>
-            <div class="filter-container-inner" v-on:click="getCameo('filter=LOHI')">
-                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+            <div class="filter-container-inner" v-on:click="setFilter('LOHI')">
+                <input type="checkbox" class="checkbox-filter" name="lohi" id="lohi">
                 <p class="checkbox-text">Price: Low - High</p>
             </div>
-            <div class="filter-container-inner" v-on:click="getCameo('filter=NEW')">
-                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+            <div class="filter-container-inner" v-on:click="setFilter('NEW')">
+                <input type="checkbox" class="checkbox-filter" name="new" id="new">
                 <p class="checkbox-text">Newest</p>
             </div>
-            <div class="filter-container-inner" v-on:click="getCameo('filter=NAME')">
-                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+            <div class="filter-container-inner" v-on:click="setFilter('NAME')">
+                <input type="checkbox" class="checkbox-filter" name="name" id="name">
                 <p class="checkbox-text">Alphabetical</p>
             </div>
             <div style="height: 2px;width: 100%;background-color: #252525;"></div>
             <p class="divider-title">Super-fast Delivery</p>
-            <div class="filter-container-inner" v-on:click="getCameo('filter=SUPERFAST')">
-                <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+            <div class="filter-container-inner" v-on:click="setFilter('SUPERFAST')">
+                <input type="checkbox" class="checkbox-filter" name="superfast" id="superfast">
                 <div>
-                    <span class="constants__OptionLabel-qlmjfl-0 bAziGA"><img style="margin-right: 5px;"
-                            aria-hidden="true" alt="zap" src="https://cdn.cameo.com/static/assets/icons/zap.svg">24hr
-                        delivery</span>
+                    <p class="checkbox-text">
+                        <span class="constants__OptionLabel-qlmjfl-0 bAziGA"><img style="margin-right: 5px;"
+                                aria-hidden="true" alt="zap"
+                                src="https://cdn.cameo.com/static/assets/icons/zap.svg">24hr
+                            delivery</span>
+                    </p>
                 </div>
             </div>
             <div style="height: 2px;width: 100%;background-color: #252525; margin-top: 1rem;"></div>
 
             <p class="divider-title">Price</p>
-            <div class="filter-container-inner" v-on:click="getCameo('low=0&hi=100')">
-                <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+            <div class="filter-container-inner" v-on:click="setRange(0,100)">
+                <input type="radio" class="checkbox-filter" name="one" id="one">
                 <p class="checkbox-text">$0 - $100</p>
             </div>
-            <div class="filter-container-inner" v-on:click="getCameo('low=100&hi=200')">
-                <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+            <div class="filter-container-inner" v-on:click="setRange(100,200)">
+                <input type="radio" class="checkbox-filter" name="two" id="two">
                 <p class="checkbox-text">$100 - $200</p>
             </div>
-            <div class="filter-container-inner" v-on:click="getCameo('low=200&hi=300')">
-                <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+            <div class="filter-container-inner" v-on:click="setRange(200,300)">
+                <input type="radio" class="checkbox-filter" name="three" id="three">
                 <p class="checkbox-text">$200 - $300</p>
             </div>
-            <div class="filter-container-inner" v-on:click="getCameo('low=300&hi=400')">
-                <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+            <div class="filter-container-inner" v-on:click="setRange(300,400)">
+                <input type="radio" class="checkbox-filter" name="four" id="four">
                 <p class="checkbox-text">$300 - $400</p>
             </div>
-            <div class="filter-container-inner" v-on:click="getCameo('hi=500')">
-                <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
+            <div class="filter-container-inner" v-on:click="setRange(0,500)">
+                <input type="radio" class="checkbox-filter" name="five" id="five">
                 <p class="checkbox-text">$500+</p>
             </div>
             <div style="height: 2px;width: 100%;background-color: #252525;"></div>
@@ -474,7 +478,7 @@
                         <img class="cameo-image" :src=[[item.image]] alt="">
                         <div class="cameo-overlay"></div>
                         <span class="cameo-price">
-                            <div  v-if="item.delivery_duration_unit == 'Hr'" data-testid="24hr-delivery" class=""><img
+                            <div v-if="item.delivery_duration_unit == 'Hr'" data-testid="24hr-delivery" class=""><img
                                     style="margin-right: 3px;width: 15px !important;height: 15px !important; object-fit: contain;"
                                     src="https://cdn.cameo.com/static/assets/icons/zap.svg" class=""></div>
                             <strong><span>[[item.price]]</span></strong>
@@ -502,92 +506,90 @@
         </div>
 
     </div>
-</div>
 
 
+
+    
 <!-- Filter model -->
 <div class="modal fade bd-example-modal-lg" id="filterModal" tabindex="-1" role="dialog"
-    aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Filter</h5>
-                <img src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-close-512.png" class="close"
-                    style="background-color: rgb(255, 3, 124);border: 0px;border-radius: 50px; width: 20px;height: 20px;padding: 3px;"
-                    data-dismiss="modal" aria-label="Close">
+aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Filter</h5>
+            <img src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-close-512.png" class="close"
+                style="background-color: rgb(255, 3, 124);border: 0px;border-radius: 50px; width: 20px;height: 20px;padding: 3px;"
+                data-dismiss="modal" aria-label="Close">
 
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="section-filter-model" id="section-filter-model">
-                    <p class="divider-title">Sort by</p>
-                    <div class="filter-container-inner">
-                        <input v-model="filterType" type="checkbox" value="RECOMMENDED" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">Recomended</p>
-                    </div>
-                    <div class="filter-container-inner">
-                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">Price: High - Low</p>
-                    </div>
-                    <div class="filter-container-inner">
-                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">Price: Low - High</p>
-                    </div>
-                    <div class="filter-container-inner">
-                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">Number of reviews</p>
-                    </div>
-                    <div class="filter-container-inner">
-                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">Newest</p>
-                    </div>
-                    <div class="filter-container-inner">
-                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">Alphabetical</p>
-                    </div>
-                    <div style="height: 2px;width: 100%;background-color: #252525;"></div>
-                    <p class="divider-title">Super-fast Delivery</p>
-                    <div class="filter-container-inner">
-                        <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
-                        <div>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="section-filter-model" id="section-filter-model">
+                <p class="divider-title">Sort by</p>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('RECOMMENDED')">
+                    <input type="checkbox" class="checkbox-filter" name="recomended" id="recomended">
+                    <p class="checkbox-text">Recomended</p>
+                </div>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('HILO')">
+                    <input type="checkbox" class="checkbox-filter" name="hilo" id="hilo">
+                    <p class="checkbox-text">Price: High - Low</p>
+                </div>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('LOHI')">
+                    <input type="checkbox" class="checkbox-filter" name="lohi" id="lohi">
+                    <p class="checkbox-text">Price: Low - High</p>
+                </div>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('NEW')">
+                    <input type="checkbox" class="checkbox-filter" name="new" id="new">
+                    <p class="checkbox-text">Newest</p>
+                </div>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('NAME')">
+                    <input type="checkbox" class="checkbox-filter" name="name" id="name">
+                    <p class="checkbox-text">Alphabetical</p>
+                </div>
+                <div style="height: 2px;width: 100%;background-color: #252525;"></div>
+                <p class="divider-title">Super-fast Delivery</p>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setFilter('SUPERFAST')">
+                    <input type="checkbox" class="checkbox-filter" name="superfast" id="superfast">
+                    <div>
+                        <p class="checkbox-text">
                             <span class="constants__OptionLabel-qlmjfl-0 bAziGA"><img style="margin-right: 5px;"
                                     aria-hidden="true" alt="zap"
-                                    src="https://cdn.cameo.com/static/assets/icons/zap.svg">24hr delivery</span>
-                        </div>
+                                    src="https://cdn.cameo.com/static/assets/icons/zap.svg">24hr
+                                delivery</span>
+                        </p>
                     </div>
-                    <div style="height: 2px;width: 100%;background-color: #252525; margin-top: 1rem;"></div>
+                </div>
+                <div style="height: 2px;width: 100%;background-color: #252525; margin-top: 1rem;"></div>
 
-                    <p class="divider-title">Price</p>
-                    <div class="filter-container-inner">
-                        <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">$0 - $100</p>
-                    </div>
-                    <div class="filter-container-inner">
-                        <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">$100 - $200</p>
-                    </div>
-                    <div class="filter-container-inner">
-                        <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">$200 - $300</p>
-                    </div>
-                    <div class="filter-container-inner">
-                        <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">$300 - $400</p>
-                    </div>
-                    <div class="filter-container-inner">
-                        <input type="radio" class="checkbox-filter" name="recomended" id="recomended">
-                        <p class="checkbox-text">$500+</p>
-                    </div>
-                    <div style="height: 2px;width: 100%;background-color: #252525;"></div>
-                    <div style="display: flex;width: 100%;justify-content: center;margin-top: 20PX;">
-                        <button class="btn-request" style="margin: 0px auto;">Apply</button>
-                    </div>
-
+                <p class="divider-title">Price</p>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setRange(0,100)">
+                    <input type="radio" class="checkbox-filter" name="one" id="one">
+                    <p class="checkbox-text">$0 - $100</p>
+                </div>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setRange(100,200)">
+                    <input type="radio" class="checkbox-filter" name="two" id="two">
+                    <p class="checkbox-text">$100 - $200</p>
+                </div>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setRange(200,300)">
+                    <input type="radio" class="checkbox-filter" name="three" id="three">
+                    <p class="checkbox-text">$200 - $300</p>
+                </div>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setRange(300,400)">
+                    <input type="radio" class="checkbox-filter" name="four" id="four">
+                    <p class="checkbox-text">$300 - $400</p>
+                </div>
+                <div data-dismiss="modal" class="filter-container-inner" v-on:click="setRange(0,500)">
+                    <input type="radio" class="checkbox-filter" name="five" id="five">
+                    <p class="checkbox-text">$500+</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+</div>
+
+</div>
+
 <script defer>
     var homepageVue = new Vue({
         el: '#section',
@@ -596,28 +598,131 @@
             this.showLoading()
             document.getElementById("section").style.display = "block"
             console.log('a is: ' + this.a)
+            var url = window.location.href
+            var arr = url.split("/");
+            this.baseUrl = arr[0] + "//" + arr[2]
             this.getAllCameo()
 
         },
         data: {
             cameo: [],
             selectedCategory: "{{selected_category}}",
-            filterType: []
+            filterType: "",
+            hi: 0,
+            low: 0,
+            baseUrl: ""
+
+        },
+        watch: {
+            filterType: function (newValue, oldValue) {
+                console.log(newValue);
+                this.getCameo(this.filterType)
+            },
+            hi: function (newVal, oldVal) {
+                if (newVal > 499) {
+                    this.getCameoPriceMoreThan(newVal)
+                } else {
+                    this.getCameoPriceRange(this.low, newVal)
+                }
+            }
         },
         methods: {
+            setRange: function (low, hi) {
+                this.low = low
+                this.hi = hi
+            },
+            setFilter: function (filter) {
+                this.filterType = filter
+            },
             getCameo: async function (filter) {
-                this.filterType.push(filter.split("=")[1])
-                console.log(this.filterType);
                 this.showLoading()
-                var response = await axios.get(`http://127.0.0.1:8000/api/category/${this.selectedCategory}?format=json&${filter}`)
+                var response = await axios.get(`${this.baseUrl}/api/category/${this.selectedCategory}?format=json&filter=${filter}`)
                 this.cameo = response.data.response.cameos
                 this.filter = response.data.response.filter
                 console.log(response)
+                this.clearUi()
                 this.hideLoading()
+                switch (this.filter) {
+                    case "RECOMMENDED":
+                        document.getElementById("recomended").checked = true
+                        break;
+                    case "HILO":
+                        document.getElementById("hilo").checked = true
+                        break;
+                    case "LOHI":
+                        document.getElementById("lohi").checked = true
+                        break;
+                    case "NEW":
+                        document.getElementById("new").checked = true
+                        break;
+                    case "NAME":
+                        document.getElementById("name").checked = true
+                        break;
+                    case "SUPERFAST":
+                        document.getElementById("superfast").checked = true
+                        break;
+                    default:
+                        break;
+                }
             },
-            getAllCameo:async function(){
+            getCameoPriceRange: async function (low, hi) {
                 this.showLoading()
-                var response = await axios.get(`http://127.0.0.1:8000/api/category/${this.selectedCategory}?format=json`)
+                var response = await axios.get(`${this.baseUrl}/api/category/${this.selectedCategory}?format=json&hi=${hi}&low=${low}`)
+                this.cameo = response.data.response.cameos
+                this.filter = response.data.response.filter
+                this.clearUi()
+                console.log(response)
+                this.hideLoading()
+                switch (this.filter) {
+                    case "ONE":
+                        document.getElementById("one").checked = true
+                        break;
+                    case "TWO":
+                        document.getElementById("two").checked = true
+                        break;
+                    case "THREE":
+                        document.getElementById("three").checked = true
+                        break;
+                    case "FOUR":
+                        document.getElementById("four").checked = true
+                        break;
+                    default:
+                        break;
+                }
+            },
+            getCameoPriceMoreThan: async function (hi) {
+                this.showLoading()
+                var response = await axios.get(`${this.baseUrl}/api/category/${this.selectedCategory}?format=json&hi=${hi}`)
+                this.cameo = response.data.response.cameos
+                this.filter = response.data.response.filter
+                this.clearUi()
+                console.log(response)
+                this.hideLoading()
+                document.getElementById("five").checked = true
+            },
+            clearFilter: function () {
+                this.clearUi()
+                this.getCameo()
+            },
+            clearUi: function () {
+                document.getElementById("recomended").checked = false
+                document.getElementById("hilo").checked = false
+                document.getElementById("lohi").checked = false
+                document.getElementById("new").checked = false
+                document.getElementById("name").checked = false
+                document.getElementById("superfast").checked = false
+                document.getElementById("recomended").checked = false
+                document.getElementById("one").checked = false
+                document.getElementById("two").checked = false
+                document.getElementById("three").checked = false
+                document.getElementById("four").checked = false
+                document.getElementById("five").checked = false
+
+
+            },
+            getAllCameo: async function () {
+                this.showLoading()
+                var response = await axios.get(`${this.baseUrl}/api/category/${this.selectedCategory}?format=json`)
                 this.cameo = response.data.response.cameos
                 this.filter = response.data.response.filter
                 console.log(response)
@@ -646,7 +751,7 @@
             },
             showFilter: function () {
                 document.getElementById("section-filter").style.display = "block"
-                document.getElementById("section-body").style.gridTemplateColumns = "1fr 5pythofr"
+                document.getElementById("section-body").style.gridTemplateColumns = "1fr 5fr"
                 document.getElementById("cameo-container").style.justifyContent = "start"
                 document.getElementById("showFilter").style.display = "none"
                 document.getElementById("hideFilter").style.display = "block"
