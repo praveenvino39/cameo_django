@@ -5,7 +5,7 @@ import stripe
 import json
 from booking.models import Booking
 from cameo.models import Cameo
-
+from django.contrib.sites.models import Site
 # Create your views here.
 
 
@@ -28,6 +28,9 @@ def stripe_token(request, order_id):
         service_fee = (booking.price / 100) * 5
         cameo = get_object_or_404(Cameo, id=booking.cameo_id)
         price = booking.price + service_fee
+        success_url = Site.objects.get_current().domain + "/payment/stripe/success"
+        cancel_url = Site.objects.get_current().domain + "/cancel.html"
+        print(success_url)
         checkout_session = stripe.checkout.Session.create(
             payment_method_types=["card"],
             line_items=[
@@ -48,9 +51,10 @@ def stripe_token(request, order_id):
                 },
             ],
             mode="payment",
-            success_url="http://127.0.0.1:8000" + "/payment/stripe/success",
-            cancel_url="http://127.0.0.1:8000" + "/cancel.html",
+            success_url= success_url,
+            cancel_url= cancel_url,
         )
+        print(request.get_full_path())
         request.session["transaction_id"] = booking.order_id
         return Response(data={"id": checkout_session.id})
     except Exception as e:

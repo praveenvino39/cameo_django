@@ -94,26 +94,166 @@
         color: rgb(255, 3, 124);
         display: none;
     }
+    
+    @media screen and (max-width: 1580px) {
+        body {
+            padding: 0px;
+        }
+        .thead{
+            font-size: 1rem;
+        }
+
+        .section-body {
+            grid-template-columns: 1fr 3fr;
+        }
+    }
+
+    @media screen and (max-width: 970px) {
+        body {
+            padding: 0px;
+        }
+        .thead{
+            font-size: .8rem !important;
+        }
+
+        .section-body {
+            grid-template-columns: 1fr 2fr;
+        }
+    }
+
+    #filterModelBtn {
+        display: none;
+    }
+
+    @media screen and (max-width: 750px) {
+        body {
+            padding: 0px;
+        }
+        .thead{
+            font-size: .7rem !important;
+        }
+
+        .container{
+            margin: 0px;
+            padding: 0px;
+        }
+
+        .section-body {
+            grid-template-columns: 1fr;
+        }
+
+        .section-filter {
+            display: none;
+        }
+
+        #hideFilter {
+            display: none;
+        }
+
+        #showFilter {
+            display: none;
+        }
+
+        #filterModelBtn {
+            display: block;
+        }
+    }
+
+    @media screen and (max-width: 450px) {
+        .cameo-link {
+            transform: scale(0.8);
+        }
+
+        .cameo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .section {
+            padding: 0px;
+        }
+
+        .section-bread-cumber {
+            padding: 5px 10px;
+        }
+
+        .section-header {
+            padding: 5px 10px;
+        }
+
+        .controls {
+            width: 60%;
+        }
+    }
+
+    @media screen and (max-width: 400px) {
+        .cameo-link {
+            transform: scale(1);
+        }
+        .thead{
+            font-size: .5   rem !important;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+        }
+
+        .cameo-container {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .cameo-image {
+            object-fit: cover;
+            height: 300px !important;
+            width: 100% !important;
+        }
+
+        .section {
+            padding: 0px;
+        }
+
+        .section-bread-cumber {
+            padding: 5px 10px;
+        }
+
+        .section-header {
+            padding: 5px 10px;
+        }
+
+        .controls {
+            width: 70%;
+        }
+
+        .cameo {
+            padding: 0px 10px;
+        }
+    }
+    .sale-table{
+        width: 100%;
+        box-sizing: border-box;
+    }
+
 </style>
 <div id="purchase" class="container mt-3">
     <table class="table sale-table">
         <thead>
             <tr>
-                <th scope="col">#Order ID</th>
-                <th scope="col">Cameo</th>
-                <th scope="col">Occasion</th>
-                <th scope="col">Status</th>
-                <th scope="col">Payment Method</th>
+                <th class="thead" scope="col">#Order ID</th>
+                <th class="thead" scope="col">Cameo</th>
+                <th class="thead" scope="col">Occasion</th>
+                <th class="thead" scope="col">Status</th>
+                <th class="thead" scope="col">Payment Method</th>
             </tr>
         </thead>
         <tbody>
             {% for purchase in purchases %}
             <tr class="order" data-bs-toggle="modal" data-bs-target="#modal-{{purchase.order_id}}">
-                <th scope="row">{{purchase.order_id}}</th>
-                <td scope="row">{{purchase.cameo.first_name}} {{purchase.cameo.last_name}}</td>
-                <td scope="row">{{purchase.occasion}}</td>
-                <td scope="row">{{purchase.order_status}}</td>
-                <td scope="row">{{purchase.payment_method}}</td>
+                <th class="thead"  scope="row">{{purchase.order_id}}</th>
+                <td class="thead"  scope="row">{{purchase.cameo.first_name}} {{purchase.cameo.last_name}}</td>
+                <td class="thead"  scope="row">{{purchase.occasion}}</td>
+                <td class="thead"  scope="row">{{purchase.order_status}}</td>
+                <td class="thead" scope="row">{{purchase.payment_method}}</td>
                 <!-- modal -->
                 <div class="modal fade" id="modal-{{purchase.order_id}}" tabindex="-1"
                     aria-labelledby="exampleModalLabel" aria-hidden="true">

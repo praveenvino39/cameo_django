@@ -169,6 +169,33 @@
             object-fit: cover;
         }
     }
+    @media screen and (max-width: 750px) {
+        body {
+            padding: 0px;
+        }
+
+        .section-body {
+            grid-template-columns: 1fr;
+        }
+
+        .section-filter {
+            display: none;
+        }
+
+        #hideFilter {
+            display: none;
+        }
+
+        #showFilter {
+            display: none;
+        }
+
+        #filterModelBtn {
+            display: block;
+        }
+    }
+
+  
 </style>
 
 {% if messages %}
@@ -204,7 +231,7 @@
     </video>
     <div class="teaser-text">Personalized videos feat. your favorite stars</div>
 </div>
-<div class="section" id="section">
+<div class="section" style="display: none;" id="section">
     <div class="section-header">
         <p style="margin: 0px;" class="section-title">Featured</p>
         <div class="controls">
@@ -236,6 +263,9 @@
     var homepageVue = new Vue({
         el: '#section',
         delimiters: ['[[', ']]'],
+        created: function(){
+            document.getElementById("section").style.display = "block"
+        },
         methods: {
             previous: function () {
                 var section = document.getElementById('section')

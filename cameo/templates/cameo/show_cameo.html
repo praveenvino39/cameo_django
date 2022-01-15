@@ -169,6 +169,118 @@
             margin: 0px auto;
         }
     }
+    @media screen and (max-width: 800px) {
+        .teaser {
+            padding: 10px 10px;
+        }
+
+        .section {
+            padding: 10px 10px;
+        }
+
+        .teaser-text {
+            width: 90%;
+            font-size: 2rem;
+        }
+
+        .teaser-video {
+            height: 40vh;
+            object-fit: cover;
+        }
+    }
+    @media screen and (max-width: 750px) {
+        body {
+            padding: 0px;
+        }
+
+        .section-body {
+            grid-template-columns: 1fr;
+        }
+
+        .section-filter {
+            display: none;
+        }
+
+        #hideFilter {
+            display: none;
+        }
+
+        #showFilter {
+            display: none;
+        }
+
+        #filterModelBtn {
+            display: block;
+        }
+    }
+
+    @media screen and (max-width: 450px) {
+        .cameo-link {
+            transform: scale(0.8);
+        }
+
+        .cameo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .section {
+            padding: 0px;
+        }
+
+        .section-bread-cumber {
+            padding: 5px 10px;
+        }
+
+        .section-header {
+            padding: 5px 10px;
+        }
+
+        .controls {
+            width: 60%;
+        }
+    }
+
+    @media screen and (max-width: 400px) {
+        .cameo-link {
+            transform: scale(1);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+        }
+
+        .cameo-container {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .cameo-image {
+            object-fit: cover;
+            height: 300px !important;
+            width: 100% !important;
+        }
+
+        .section {
+            padding: 0px;
+        }
+
+        .section-bread-cumber {
+            padding: 5px 10px;
+        }
+
+        .section-header {
+            padding: 5px 10px;
+        }
+
+        .controls {
+            width: 70%;
+        }
+
+        .cameo {
+            padding: 0px 10px;
+        }
+    }
 </style>
 <div id="cameo-detail-container" class="container mt-3 cameo-detail-container">
     <div class="imp-btn">
